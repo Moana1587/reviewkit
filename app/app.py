@@ -366,6 +366,34 @@ def check_company():
             conn.close()
 
 if __name__ == '__main__':
+    import sys
+    
     with app.app_context():
         sqlite_db.create_all()  # create tables if they don't exist
-    app.run(debug=True, host='127.0.0.1', port=8000, use_reloader=False)
+    
+    # Check if running with --host and --port arguments for public access
+    host = '127.0.0.1'  # Default to localhost
+    port = 8000
+    debug = True
+    
+    if '--host' in sys.argv:
+        host_idx = sys.argv.index('--host')
+        if host_idx + 1 < len(sys.argv):
+            host = sys.argv[host_idx + 1]
+            debug = False  # Disable debug in production
+    
+    if '--port' in sys.argv:
+        port_idx = sys.argv.index('--port')
+        if port_idx + 1 < len(sys.argv):
+            port = int(sys.argv[port_idx + 1])
+    
+    print(f"\n{'='*60}")
+    print(f"  ReviewKit Server Starting")
+    print(f"{'='*60}")
+    print(f"  Host: {host}")
+    print(f"  Port: {port}")
+    print(f"  Debug: {debug}")
+    print(f"  Access at: http://{host if host != '0.0.0.0' else 'YOUR_SERVER_IP'}:{port}")
+    print(f"{'='*60}\n")
+    
+    app.run(debug=debug, host=host, port=port, use_reloader=False, threaded=True)
