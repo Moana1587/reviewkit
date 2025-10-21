@@ -1,0 +1,1397 @@
+nohup: ignoring input
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://165.227.239.34:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 560-309-518
+147.185.132.31 - - [02/Jul/2024 19:29:17] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+69.164.217.74 - - [03/Jul/2024 00:02:25] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+205.210.31.90 - - [03/Jul/2024 05:52:15] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+165.154.138.165 - - [03/Jul/2024 05:56:35] code 400, message Bad request version ('\x00\x9eÌ¨Ìª\x003\x00=\x00\x16À')
+165.154.138.165 - - [03/Jul/2024 05:56:35] "\x16\x03\x01\x01\x17\x01\x00\x01\x13\x03\x03Ã±¢xm·\x97\x8b4]wL\x85n¡\x0e$\x10\x85  ö\x95&\x063ï|8\x9f¨} \x9e\\\x1fgu3±\x84\x0d\x14 úñ\x93\x0dñFÃ\x02½Â\x81\x03À·\x0e\x8e´[\x84¤¸\x004Ì¨Ì©À/À0À+À,À\x09\x00\x9eÌ¨Ìª\x003\x00=\x00\x16À" HTTPStatus.BAD_REQUEST -
+165.154.138.165 - - [03/Jul/2024 05:56:45] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+165.154.138.165 - - [03/Jul/2024 05:56:46] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+165.154.138.165 - - [03/Jul/2024 05:56:46] "GET /robots.txt HTTP/1.1" 404 -
+165.154.138.165 - - [03/Jul/2024 05:56:46] "GET /sitemap.xml HTTP/1.1" 404 -
+165.154.138.165 - - [03/Jul/2024 05:56:46] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+205.210.31.81 - - [03/Jul/2024 06:06:54] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+45.128.232.98 - - [03/Jul/2024 06:20:12] code 400, message Bad request syntax ('JDWP-Handshake')
+45.128.232.98 - - [03/Jul/2024 06:20:12] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+115.231.78.5 - - [03/Jul/2024 10:28:59] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+115.231.78.5 - - [03/Jul/2024 10:28:59] "GET /robots.txt HTTP/1.1" 404 -
+178.128.64.60 - - [03/Jul/2024 12:02:55] code 400, message Bad request version ('À\x14À')
+178.128.64.60 - - [03/Jul/2024 12:02:55] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x91ät6R¿ÝÒ\x89ÓÑ\x0e\x9djÉQÚ\x11_\x98\x82´½Æ×òÒð,\x0bñf\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+178.128.64.60 - - [03/Jul/2024 12:02:56] code 400, message Bad request version ('À\x14À')
+178.128.64.60 - - [03/Jul/2024 12:02:56] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x031î÷îº\x02\x1em3ä\x8dD ßp9&`ÆÌ\x12\x82Å¡<\x15o\x00r\x18Õ«\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+178.128.64.60 - - [03/Jul/2024 12:02:56] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+80.82.70.133 - - [03/Jul/2024 15:22:50] code 400, message Bad request version ("¯nãY»bhlÿ(=':©\x82ÙoÈ¢×\x93\x98´ï\x80å¹\x90\x00(À")
+80.82.70.133 - - [03/Jul/2024 15:22:50] "\x16\x03\x02\x01o\x01\x00\x01k\x03\x02RHÅ\x1a#÷:Nßâ´\x82/ÿ\x09T\x9f§Äy°hÆ\x13\x8c¤\x1c="á\x1a\x98 \x84´,\x85¯nãY»bhlÿ(=':©\x82ÙoÈ¢×\x93\x98´ï\x80å¹\x90\x00(À" HTTPStatus.BAD_REQUEST -
+5.8.11.202 - - [03/Jul/2024 16:57:51] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03í\x06L\x00Õ')
+5.8.11.202 - - [03/Jul/2024 16:57:51] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03í\x06L\x00Õ" HTTPStatus.BAD_REQUEST -
+5.8.11.202 - - [03/Jul/2024 16:57:51] "GET /v2/_catalog HTTP/1.1" 404 -
+198.235.24.88 - - [03/Jul/2024 18:32:47] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+162.142.125.40 - - [03/Jul/2024 22:59:45] code 400, message Bad request version ('À\x14À')
+162.142.125.40 - - [03/Jul/2024 22:59:45] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03åc+ <÷tZÒT\x17)@OhkÓãìªÖ¬#µ±\x08¿pHq;\x99 Kd+¾ j)èl"øãg@\x81Ú\x174£±©Õ©5 ¹s :]\x0b\x86\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+162.142.125.40 - - [03/Jul/2024 22:59:49] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+162.142.125.40 - - [03/Jul/2024 23:00:03] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+162.142.125.40 - - [03/Jul/2024 23:00:04] code 505, message Invalid HTTP version (2.0)
+162.142.125.40 - - [03/Jul/2024 23:00:04] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+45.79.128.205 - - [03/Jul/2024 23:37:28] code 400, message Bad request version ('À\x14À')
+45.79.128.205 - - [03/Jul/2024 23:37:28] "\x16\x03\x01\x00\x85\x01\x00\x00\x81\x03\x03QÇ7²\x0cW-gÑ$ñÈû%%\x98\x94\x10k^\x99k\x17§8\x0dÍÏéd¿\x08\x00\x00 À/À0À+À,Ì¨Ì©À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+167.94.145.106 - - [04/Jul/2024 03:06:26] code 400, message Bad request version ('À\x14À')
+167.94.145.106 - - [04/Jul/2024 03:06:26] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03¾Å\\È"ì\x89\x9dT ÕnÿÈÏTU#\x01¯W\x04\x82i{¦ ¤÷¾6v ÿ2\x1cÔy70\x81i\x8eÃ\x0f²1§\x8b\x9av\x94¿óOQÔ#zà\x9cg×¯ÿ\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+167.94.145.106 - - [04/Jul/2024 03:06:29] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.145.106 - - [04/Jul/2024 03:06:33] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.145.106 - - [04/Jul/2024 03:06:33] code 505, message Invalid HTTP version (2.0)
+167.94.145.106 - - [04/Jul/2024 03:06:33] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+205.210.31.141 - - [04/Jul/2024 03:44:46] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+199.45.154.121 - - [04/Jul/2024 06:28:34] code 400, message Bad request version ('À\x14À')
+199.45.154.121 - - [04/Jul/2024 06:28:34] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x9bD\x06\x02ß@\x86p\x80ý\x14yR|D\x92æ!º\x9bV¯ t_§\x80ºéEÂ\x16 [\x82Ì¨V\x80¡Ö\x87ao\x9b{»J4x\x19)ØáÜ\x18âgM\x14uæ\x0d\x91=\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+199.45.154.121 - - [04/Jul/2024 06:28:39] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+199.45.154.121 - - [04/Jul/2024 06:28:47] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+199.45.154.121 - - [04/Jul/2024 06:28:52] code 505, message Invalid HTTP version (2.0)
+199.45.154.121 - - [04/Jul/2024 06:28:52] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+192.34.128.73 - - [04/Jul/2024 10:45:06] code 400, message Bad request syntax ('JDWP-Handshake')
+192.34.128.73 - - [04/Jul/2024 10:45:06] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+192.34.128.73 - - [04/Jul/2024 10:45:07] code 400, message Bad request syntax ('JDWP-Handshake')
+192.34.128.73 - - [04/Jul/2024 10:45:07] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+192.34.128.73 - - [04/Jul/2024 10:45:12] code 400, message Bad request syntax ('JDWP-Handshake')
+192.34.128.73 - - [04/Jul/2024 10:45:12] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+192.34.128.73 - - [04/Jul/2024 10:45:22] code 400, message Bad request syntax ('JDWP-Handshake')
+192.34.128.73 - - [04/Jul/2024 10:45:22] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+192.34.128.73 - - [04/Jul/2024 10:45:40] code 400, message Bad request syntax ('JDWP-Handshake')
+192.34.128.73 - - [04/Jul/2024 10:45:40] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+192.34.128.73 - - [04/Jul/2024 10:46:17] code 400, message Bad request syntax ('JDWP-Handshake')
+192.34.128.73 - - [04/Jul/2024 10:46:17] "JDWP-Handshake" HTTPStatus.BAD_REQUEST -
+185.170.144.3 - - [04/Jul/2024 11:33:14] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+185.170.144.3 - - [04/Jul/2024 11:33:14] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" HTTPStatus.BAD_REQUEST -
+94.102.49.193 - - [04/Jul/2024 12:17:24] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+220.197.51.96 - - [04/Jul/2024 18:08:53] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+183.160.194.17 - - [04/Jul/2024 18:09:08] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+188.166.169.183 - - [04/Jul/2024 21:44:55] "GET http://uplo.ad/?v=1&ip=165.227.239.34&port=5000 HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+77.238.250.188 - - [04/Jul/2024 22:20:47] "CONNECT www.google.com:443 HTTP/1.1" 404 -
+199.45.154.112 - - [04/Jul/2024 22:41:30] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03RO#\x88ßK\x8d\x14=ß\x96\x04H5\x06ÉrIwY¿~F\x18é*\x81±\x0eU?½')
+199.45.154.112 - - [04/Jul/2024 22:41:30] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03RO#\x88ßK\x8d\x14=ß\x96\x04H5\x06ÉrIwY¿~F\x18é*\x81±\x0eU?½ s}-áñÏolP\x18¿6\x9e\x8d\x91%\x89þÑ" HTTPStatus.BAD_REQUEST -
+199.45.154.112 - - [04/Jul/2024 22:41:34] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+199.45.154.112 - - [04/Jul/2024 22:41:40] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+199.45.154.112 - - [04/Jul/2024 22:41:48] code 505, message Invalid HTTP version (2.0)
+199.45.154.112 - - [04/Jul/2024 22:41:48] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+167.99.44.37 - - [04/Jul/2024 22:41:52] code 400, message Bad request version ('À\x14À')
+167.99.44.37 - - [04/Jul/2024 22:41:52] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03T\x82òé\x89×ä\x99ÆÞ\x1a¥\x99V±\x8b\x97>\\À\x02ëq\x0fê\x08\x0dÉàâ¾\x1e\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+167.99.44.37 - - [04/Jul/2024 22:41:52] code 400, message Bad request version ('À\x14À')
+167.99.44.37 - - [04/Jul/2024 22:41:52] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03ò\x01{7\x17\x07M&[ðòãd5Kõ»0>>Â &2ËGr\x0b\x0e^)þ\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+167.99.44.37 - - [04/Jul/2024 22:41:52] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+206.168.34.44 - - [04/Jul/2024 22:47:26] code 400, message Bad request version ('À\x14À')
+206.168.34.44 - - [04/Jul/2024 22:47:26] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03õdxºõ\x84ð±üp\x93³C\x03æ¬\x00\x95£ÙEÝ\x0eØÊ6í¡\x9c\x92\x03­ iÑý\x05ôÜ\x0fÆ¯Y\x01ÚUJY£\x86\x1e.\x87#\x93=\x05\x13ÂoÎt\x03\x1d\x9a\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+206.168.34.44 - - [04/Jul/2024 22:47:30] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+206.168.34.44 - - [04/Jul/2024 22:47:33] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+206.168.34.44 - - [04/Jul/2024 22:47:34] code 505, message Invalid HTTP version (2.0)
+206.168.34.44 - - [04/Jul/2024 22:47:34] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+45.79.181.179 - - [04/Jul/2024 23:35:13] code 400, message Bad request version ('À\x14À')
+45.79.181.179 - - [04/Jul/2024 23:35:13] "\x16\x03\x01\x00\x85\x01\x00\x00\x81\x03\x03\x83\x09!fÈ\x86(á\x16oU5¦´cvÒÄÚ\x0e!ö9K\x0eu~êZ\x9f\x0dX\x00\x00 À/À0À+À,Ì¨Ì©À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+104.248.134.252 - - [04/Jul/2024 23:45:53] "GET http://uplo.ad/?v=1&ip=165.227.239.34&port=5000 HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+164.90.218.61 - - [04/Jul/2024 23:53:01] "GET http://uplo.ad/?v=1&ip=165.227.239.34&port=5000 HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+45.156.130.8 - - [05/Jul/2024 02:05:14] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+147.185.132.177 - - [05/Jul/2024 02:14:15] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.146.59 - - [05/Jul/2024 02:53:05] code 400, message Bad request version ('À\x14À')
+167.94.146.59 - - [05/Jul/2024 02:53:05] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ÅÅü@\x88d\x98\x90\x9eµ\x19lº)TqýYî@ Ô\x98p,µ\x00@p³\x0dü ï\x01\x1aÑA¬\x9dZ§}\x8c\x7fÑR\x87\x0e\\:ßÍ\x9c\x19cjèÔqé\x84\x11"\x07\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+167.94.146.59 - - [05/Jul/2024 02:53:08] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.146.59 - - [05/Jul/2024 02:53:11] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.146.59 - - [05/Jul/2024 02:53:11] code 505, message Invalid HTTP version (2.0)
+167.94.146.59 - - [05/Jul/2024 02:53:11] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+198.235.24.132 - - [05/Jul/2024 03:20:16] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+205.210.31.101 - - [05/Jul/2024 05:04:36] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+161.35.79.116 - - [05/Jul/2024 08:05:48] "GET http://uplo.ad/?v=1&ip=165.227.239.34&port=5000 HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+47.254.207.44 - - [05/Jul/2024 08:42:53] code 400, message Bad request version ('À\x13À')
+47.254.207.44 - - [05/Jul/2024 08:42:53] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03I\x06²ù¼\x99iÀYûøºe-\x83Ud]\x0e\x8d·b8´gÆÝ9dZ8f gÁ\x81i³öòË°©\x19NÖ½\x95g|püé<Z¡\x90T·é¥8'O;\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+47.254.207.44 - - [05/Jul/2024 08:43:03] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+172.169.1.171 - - [05/Jul/2024 09:06:19] "GET /v2/ HTTP/1.1" 404 -
+205.210.31.59 - - [05/Jul/2024 09:30:21] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+80.66.83.114 - - [05/Jul/2024 14:58:45] code 400, message Bad request syntax ('\x04\x01\x00\x19h/\x12á\x00')
+80.66.83.114 - - [05/Jul/2024 14:58:45] "\x04\x01\x00\x19h/\x12á\x00" HTTPStatus.BAD_REQUEST -
+80.66.83.114 - - [05/Jul/2024 14:59:45] code 400, message Bad request syntax ('\x05\x01\x00')
+80.66.83.114 - - [05/Jul/2024 14:59:45] "\x05\x01\x00" HTTPStatus.BAD_REQUEST -
+80.66.83.114 - - [05/Jul/2024 14:59:45] "CONNECT hotmail-com.olc.protection.outlook.com:25 HTTP/1.1" 404 -
+80.66.83.114 - - [05/Jul/2024 15:13:34] code 400, message Bad HTTP/0.9 request type ('\x04\x01\x00\x194e')
+80.66.83.114 - - [05/Jul/2024 15:13:34] "\x04\x01\x00\x194e\x09\x03\x00" HTTPStatus.BAD_REQUEST -
+80.66.83.114 - - [05/Jul/2024 15:14:34] code 400, message Bad request syntax ('\x05\x01\x00')
+80.66.83.114 - - [05/Jul/2024 15:14:34] "\x05\x01\x00" HTTPStatus.BAD_REQUEST -
+80.66.83.114 - - [05/Jul/2024 15:14:34] "CONNECT hotmail-com.olc.protection.outlook.com:25 HTTP/1.1" 404 -
+147.185.132.106 - - [05/Jul/2024 17:42:07] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+147.185.132.15 - - [05/Jul/2024 17:53:02] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+80.66.83.114 - - [05/Jul/2024 18:49:05] code 400, message Bad HTTP/0.9 request type ('\x04\x01\x00PUÎ')
+80.66.83.114 - - [05/Jul/2024 18:49:05] "\x04\x01\x00PUÎ s\x00" HTTPStatus.BAD_REQUEST -
+80.66.83.114 - - [05/Jul/2024 18:50:05] code 400, message Bad request syntax ('\x05\x01\x00')
+80.66.83.114 - - [05/Jul/2024 18:50:05] "\x05\x01\x00" HTTPStatus.BAD_REQUEST -
+80.66.83.114 - - [05/Jul/2024 18:50:05] "CONNECT 85.206.160.115:80 HTTP/1.1" 404 -
+205.210.31.92 - - [05/Jul/2024 20:10:06] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.138.33 - - [05/Jul/2024 20:14:40] code 400, message Bad request version ('ÎÎ=\x94\x93:e\x83')
+167.94.138.33 - - [05/Jul/2024 20:14:40] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03,y\x92\x08í\x9b1aVÅ2\x0ePÇÝ¥¢\x13\x90jw\x898ÆF\x00TïfÉØ\x05 0¬\x09ÎÎ=\x94\x93:e\x83" HTTPStatus.BAD_REQUEST -
+167.94.138.33 - - [05/Jul/2024 20:14:43] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.138.33 - - [05/Jul/2024 20:14:47] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+167.94.138.33 - - [05/Jul/2024 20:14:48] code 505, message Invalid HTTP version (2.0)
+167.94.138.33 - - [05/Jul/2024 20:14:48] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+147.185.132.99 - - [05/Jul/2024 20:16:12] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+205.210.31.212 - - [05/Jul/2024 20:25:48] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+147.185.132.162 - - [05/Jul/2024 21:49:39] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+205.210.31.197 - - [05/Jul/2024 22:22:50] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+91.191.209.202 - - [05/Jul/2024 23:06:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+91.191.209.202 - - [05/Jul/2024 23:06:31] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" HTTPStatus.BAD_REQUEST -
+185.100.87.136 - - [06/Jul/2024 01:01:11] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00\x11\x00\x00\x01é\x00\x01\x00\x00\x00ÿÿÿÿ\x01\x00\x00\x00\x00\x00\x00\x00')
+185.100.87.136 - - [06/Jul/2024 01:01:11] "\x00\x00\x00\x11\x00\x00\x01é\x00\x01\x00\x00\x00ÿÿÿÿ\x01\x00\x00\x00\x00\x00\x00\x00\x0c\x02\x00\x00\x00\x10MyCustomAssembly\x05\x01\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+91.191.209.202 - - [06/Jul/2024 05:14:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+91.191.209.202 - - [06/Jul/2024 05:14:31] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" HTTPStatus.BAD_REQUEST -
+209.38.37.42 - - [06/Jul/2024 07:15:57] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03r\x84\x16[º\x08gk\x9d?KA6ÄØVGÜñ\x19Ub*É9ò\x99nx#¸\x9b\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+209.38.37.42 - - [06/Jul/2024 07:15:57] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03r\x84\x16[º\x08gk\x9d?KA6ÄØVGÜñ\x19Ub*É9ò\x99nx#¸\x9b\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+209.38.37.42 - - [06/Jul/2024 07:15:57] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03"\x90s)\x18}\x03Ü\x01ç\x98\x86®·p\x07¾íÒö«Ë³\x80Hàz\x7fÊ:ëØ\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+209.38.37.42 - - [06/Jul/2024 07:15:57] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03"\x90s)\x18}\x03Ü\x01ç\x98\x86®·p\x07¾íÒö«Ë³\x80Hàz\x7fÊ:ëØ\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+209.38.37.42 - - [06/Jul/2024 07:15:57] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+185.242.226.47 - - [06/Jul/2024 09:54:24] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+154.212.141.176 - - [06/Jul/2024 19:39:22] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+103.149.26.200 - - [06/Jul/2024 19:39:32] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+103.149.26.200 - - [06/Jul/2024 19:39:33] "GET /?__debugger__=yes&amp;cmd=resource&amp;f=console.png HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+198.235.24.38 - - [06/Jul/2024 20:59:29] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+34.217.114.36 - - [06/Jul/2024 22:36:16] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+45.79.172.21 - - [06/Jul/2024 23:35:46] code 400, message Bad request version ('À\x14À')
+45.79.172.21 - - [06/Jul/2024 23:35:46] "\x16\x03\x01\x00\x85\x01\x00\x00\x81\x03\x03*s¯ý\x13iÎöª4Ù\x87ÍRñÌ\x98\x15sù\x10\x00\x8eaë9ì\x98Dý\x8f°\x00\x00 À/À0À+À,Ì¨Ì©À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+167.94.138.51 - - [07/Jul/2024 00:36:36] code 400, message Bad request version ('wê¨\x94ZÅÜô¦UÐÐõ±º')
+167.94.138.51 - - [07/Jul/2024 00:36:36] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ÎÛñ\x98ìÇØaPN`ö¹v \x11Ñ\x97?\x85ï4\x90b\x8bÂ@\x90z}\x8e½ wê¨\x94ZÅÜô¦UÐÐõ±º" HTTPStatus.BAD_REQUEST -
+147.185.132.135 - - [07/Jul/2024 01:12:42] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+35.203.210.95 - - [07/Jul/2024 01:52:17] code 400, message Bad request version ('À\x13À')
+35.203.210.95 - - [07/Jul/2024 01:52:17] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03î\x84î\x11ÐJø6\x8d\x81ú©bzd=\x14hÝ\x1dX\x1fS.\x8cTä"+Áµ8 \x98û\x0c\x8a­«ç\x83@%WZK\x97\x91Ö7¤Ú\x1760LR|;â/=9·¡\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+35.203.210.95 - - [07/Jul/2024 01:52:17] code 400, message Bad request syntax ('\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x9eH§')
+35.203.210.95 - - [07/Jul/2024 01:52:17] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x9eH§" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:32] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+109.74.204.123 - - [07/Jul/2024 10:47:32] code 400, message Bad request version ('RTSP/1.0')
+109.74.204.123 - - [07/Jul/2024 10:47:32] "OPTIONS / RTSP/1.0" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:37] code 400, message Bad HTTP/0.9 request type ('\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:37] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:42] code 400, message Bad request version ('0.12\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:42] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:47] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:47] "\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x0cGetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:47] "OPTIONS / HTTP/1.0" 200 -
+109.74.204.123 - - [07/Jul/2024 10:47:52] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:52] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:52] code 400, message Bad request syntax ('HELP')
+109.74.204.123 - - [07/Jul/2024 10:47:52] "HELP" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:52] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:52] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:52] code 400, message Bad request version ('\x00/\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:52] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:52] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+109.74.204.123 - - [07/Jul/2024 10:47:52] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:57] code 400, message Bad HTTP/0.9 request type ('l\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:57] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:57] code 400, message Bad request version ('SIP/2.0')
+109.74.204.123 - - [07/Jul/2024 10:47:57] "OPTIONS sip:nm SIP/2.0" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:47:57] code 400, message Bad request version ('\x00/\x00')
+109.74.204.123 - - [07/Jul/2024 10:47:57] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:48:02] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+109.74.204.123 - - [07/Jul/2024 10:48:07] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03}°')
+109.74.204.123 - - [07/Jul/2024 10:48:07] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03}°\x09À+¦XiT]\x92;" HTTPStatus.BAD_REQUEST -
+109.74.204.123 - - [07/Jul/2024 10:48:08] code 400, message Bad request syntax ('\x0e\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00bbbb0100000001')
+109.74.204.123 - - [07/Jul/2024 10:48:08] "\x0e\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00bbbb0100000001" HTTPStatus.BAD_REQUEST -
+206.81.25.96 - - [07/Jul/2024 14:05:12] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+178.128.192.61 - - [07/Jul/2024 14:05:12] "GET /query?q=SHOW+DIAGNOSTICS HTTP/1.1" 404 -
+164.92.253.213 - - [07/Jul/2024 14:05:12] "GET /cgi-bin/authLogin.cgi HTTP/1.1" 404 -
+206.189.55.15 - - [07/Jul/2024 14:05:12] "GET /v2/_catalog HTTP/1.1" 404 -
+206.189.55.166 - - [07/Jul/2024 14:05:12] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+159.89.2.50 - - [07/Jul/2024 14:05:12] code 400, message Bad request version ('À\x13À')
+159.89.2.50 - - [07/Jul/2024 14:05:12] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03R\x15\x8eM\x0d£ª\x82Ø^ \x03ò-Ü¹¥\x89\x9d[/OÝâ}\x93½SÓ÷ò· p\x10´\x87Âñ\x921-Ù\x11-\x17;"\x86\x8e\x05\x1fÌ$\x1c\x89\x17§\x17\x04a\x8bRùt\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+157.230.106.186 - - [07/Jul/2024 14:05:12] code 400, message Bad request version ("ÅÜÜðâ\x19\x7fô\x80¢¤kfW\x05\xadÚ\x90,\x9bÁÀ\x84²k\x96À\x18àI-\x98\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+157.230.106.186 - - [07/Jul/2024 14:05:12] "\x16\x03\x01\x01$\x01\x00\x01 \x03\x03ñKf÷#f¿\x12ô$ô4G>\x8a¦\x87)F\x04¶ÉÆ«M%Ì\x9d'[n\x14 ÅÜÜðâ\x19\x7fô\x80¢¤kfW\x05­Ú\x90,\x9bÁÀ\x84²k\x96À\x18àI-\x98\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" HTTPStatus.BAD_REQUEST -
+164.92.236.73 - - [07/Jul/2024 14:05:12] "GET /solr/admin/info/system HTTP/1.1" 404 -
+159.89.2.50 - - [07/Jul/2024 14:05:12] code 400, message Bad request version ('À\x13À')
+159.89.2.50 - - [07/Jul/2024 14:05:12] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x8c\x10\x99\x18¤ZØ¥5}]æF\x17PîêÝ¸¡{a¦Áøë\x1déRO\x16\x88 C÷Ú\x92\x02}*a"ËÑM­ìµ\x19N\x8c\x94µ\x94|Lÿèm¬\x1awé\x82ï\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+164.92.236.73 - - [07/Jul/2024 14:05:12] "GET /solr/admin/cores?action=STATUS&wt=json HTTP/1.1" 404 -
+159.89.2.50 - - [07/Jul/2024 14:05:12] code 400, message Bad request version ('À\x13À')
+159.89.2.50 - - [07/Jul/2024 14:05:12] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03>=È\x18.\x83-ì!{>\x16\x1f´5´û£È>ïÔ¸W]ç8O/\x820\x1f &¾*\x97·Xñv¥\x9d,üØòV(\x80\x0fJÆr\x0275\x89m¾\x06Ð87s\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+52.76.71.100 - - [07/Jul/2024 14:05:13] "GET /favicon.ico HTTP/1.1" 404 -
+23.145.40.147 - - [07/Jul/2024 15:58:04] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+36.99.136.129 - - [07/Jul/2024 15:58:17] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+164.90.215.97 - - [07/Jul/2024 16:08:16] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+165.227.173.203 - - [07/Jul/2024 16:08:16] "GET /v2/_catalog HTTP/1.1" 404 -
+206.189.55.111 - - [07/Jul/2024 16:08:16] "GET /cgi-bin/authLogin.cgi HTTP/1.1" 404 -
+138.68.87.76 - - [07/Jul/2024 16:08:16] "GET /solr/admin/info/system HTTP/1.1" 404 -
+206.189.55.166 - - [07/Jul/2024 16:08:16] "GET /query?q=SHOW+DIAGNOSTICS HTTP/1.1" 404 -
+206.189.55.15 - - [07/Jul/2024 16:08:16] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x80\x7f<ÿöi¹Ìyà¸í\x14êf#\x0351DÊ\x91µeïöñ¦\x94[b\x9e')
+206.189.55.15 - - [07/Jul/2024 16:08:16] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x80\x7f<ÿöi¹Ìyà¸í\x14êf#\x0351DÊ\x91µeïöñ¦\x94[b\x9e á\x0e" HTTPStatus.BAD_REQUEST -
+178.128.192.61 - - [07/Jul/2024 16:08:16] code 400, message Bad request version ("\x9cÈ\x00\x90ØI\x92µB6Ò#Ý;ÖÍ?Ä/3ÕQ\x131\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+178.128.192.61 - - [07/Jul/2024 16:08:16] "\x16\x03\x01\x01$\x01\x00\x01 \x03\x03)+\x04\x008qR£ô\x02Ð¸çtç«bIÒéÞAM:ý\x96\x83\x87ú\x99=» Þ\x7fÛOXâ¢\x0d\x9cÈ\x00\x90ØI\x92µB6Ò#Ý;ÖÍ?Ä/3ÕQ\x131\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" HTTPStatus.BAD_REQUEST -
+159.89.2.50 - - [07/Jul/2024 16:08:16] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+206.189.55.15 - - [07/Jul/2024 16:08:16] code 400, message Bad request version ('À\x13À')
+206.189.55.15 - - [07/Jul/2024 16:08:16] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03B¡H\x99á=Æ\x82\x14öïg"\x98Lö\x86Ï\x04Y^²\x09\x92CÀÛ/¢2\x80± ìØ\x19\x93\x9f\x14Ä\x16@¥7¦\x9a\x83"\x81\x99Øá·Æ\x07n­\x99ë\x1d\x94\x16Ììt\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+138.68.87.76 - - [07/Jul/2024 16:08:16] "GET /solr/admin/cores?action=STATUS&wt=json HTTP/1.1" 404 -
+206.189.55.15 - - [07/Jul/2024 16:08:16] code 400, message Bad request version ('À\x13À')
+206.189.55.15 - - [07/Jul/2024 16:08:16] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ïp©\x1a.¼\x9f"ð\x85ô<ÆÎ\x8f»Ê\x9a\x9bèó\x96ë\x99mw %úa\x7f. ó}\x8f4^ì#\x98îTMîÃP7÷\x82Eõ°;¯Þ\x90ßÐ55ýJ\x9d\x02\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+52.76.71.100 - - [07/Jul/2024 16:08:16] "GET /favicon.ico HTTP/1.1" 404 -
+162.142.125.209 - - [07/Jul/2024 17:58:44] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+162.142.125.209 - - [07/Jul/2024 17:58:44] code 505, message Invalid HTTP version (2.0)
+162.142.125.209 - - [07/Jul/2024 17:58:44] "PRI * HTTP/2.0" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+139.59.162.20 - - [07/Jul/2024 19:25:16] code 400, message Bad request version ('À\x14À')
+139.59.162.20 - - [07/Jul/2024 19:25:16] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03íPÝs\x9d°±Ì\x1e!bâEAÇ®ÔOá\x0bñv\x0f7û\x14»1}í'Ã\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+139.59.162.20 - - [07/Jul/2024 19:25:16] code 400, message Bad request version ('À\x14À')
+139.59.162.20 - - [07/Jul/2024 19:25:16] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03ÒþÃ\x93Y«FËnÏ¢\x1f°\x83\x97=·\x9bôpð³oðï\x19Ì\x96a\x81b.\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+139.59.162.20 - - [07/Jul/2024 19:25:17] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+174.138.61.44 - - [07/Jul/2024 21:25:29] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+198.235.24.233 - - [07/Jul/2024 21:40:28] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+205.210.31.95 - - [08/Jul/2024 02:11:29] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+152.32.234.39 - - [08/Jul/2024 06:48:24] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+152.32.234.39 - - [08/Jul/2024 06:48:24] code 400, message Bad request version ('À\x13À')
+152.32.234.39 - - [08/Jul/2024 06:48:24] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03·H}mWO>Pt\x94³m¦aÏ\x073å\x8bî\x96ïEi±Õ\\\x00\x17¤Rb Uú¸á&\x05\x0cç\x0eØ6\x85\x9aº¹u\x9cÆ\x8d\x8a\x1e\x94ê.n\x8b\x06\x82 \x02Q=\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" HTTPStatus.BAD_REQUEST -
+152.32.234.39 - - [08/Jul/2024 06:48:25] code 400, message Bad HTTP/0.9 request type ('t3')
+152.32.234.39 - - [08/Jul/2024 06:48:25] "t3 12.1.2" HTTPStatus.BAD_REQUEST -
+104.209.35.238 - - [08/Jul/2024 09:58:08] "GET /v2/ HTTP/1.1" 404 -
+142.4.218.114 - - [08/Jul/2024 16:53:51] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+5.196.102.79 - - [08/Jul/2024 17:35:42] "GET /favicon.ico HTTP/1.1" 404 -
+205.210.31.199 - - [08/Jul/2024 21:20:29] "GET / HTTP/1.0" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+192.155.88.231 - - [09/Jul/2024 00:34:22] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+138.68.16.39 - - [09/Jul/2024 05:54:10] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03|£KjVß:®õÄè»dWâöKOLA¢¸ßÊ\x07\x14XqaIE+\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+138.68.16.39 - - [09/Jul/2024 05:54:10] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03|£KjVß:®õÄè»dWâöKOLA¢¸ßÊ\x07\x14XqaIE+\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+138.68.16.39 - - [09/Jul/2024 05:54:11] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x16XÈõîM{\x7f\x92Õ\x98\\ar8÷Ð³%÷\x98$öå#\x01=»²'Ôø\x00\x00\x1aÀ/À+À\x11À\x07À\x13À")
+138.68.16.39 - - [09/Jul/2024 05:54:11] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x16XÈõîM{\x7f\x92Õ\x98\\ar8÷Ð³%÷\x98$öå#\x01=»²'Ôø\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" HTTPStatus.BAD_REQUEST -
+138.68.16.39 - - [09/Jul/2024 05:54:11] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+198.235.24.246 - - [09/Jul/2024 06:26:32] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined
+178.32.170.20 - - [09/Jul/2024 09:16:47] "GET / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.10/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/root/app/app.py", line 64, in index
+    return render_template('index.html')
+NameError: name 'render_template' is not defined

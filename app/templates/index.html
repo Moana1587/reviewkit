@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .company-selection-card {
+            width: 500px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .company-selection-card h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .company-selection-form {
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .form-group select:hover {
+            border-color: #007bff;
+        }
+        
+        .custom-company-input {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .custom-company-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .custom-company-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .custom-company-input button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .custom-company-input button:hover {
+            background-color: #0056b3;
+        }
+        
+        .start-chat-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .start-chat-button:hover:not(:disabled) {
+            background-color: #218838;
+        }
+        
+        .start-chat-button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .chat-container {
+            width: 500px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .company-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .company-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .back-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+        .messages {
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #fafafa;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding: 10px;
+        }
+        .input-container input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 0;
+            font-size: 16px;
+            border-top-left-radius: 8px;
+        }
+        .input-container button {
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-top-right-radius: 8px;
+            cursor: pointer;
+        }
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+            position: relative;
+        }
+        .message.user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .message.bot {
+            background-color: #e1e1e1;
+            color: #333;
+            align-self: flex-start;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 20px;
+            height: 20px;
+            animation: spin 2s linear infinite;
+            display: none;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Company Selection Card -->
+    <div class="company-selection-card" id="company-selection-card">
+        <h2>Select Company to Analyze</h2>
+        <div class="company-selection-form">
+            <div class="form-group">
+                <label for="company-select">Choose a company:</label>
+                <select id="company-select" onchange="handleCompanySelection()">
+                    <option value="">-- Select a Company --</option>
+                    <option value="134">The Ghost Bus Tours Edinburgh (ID: 134)</option>
+                    <option value="127">The Ghost Bus Tours Edinburgh (ID: 127)</option>
+                    <option value="122">The Ghost Bus Tours (ID: 122)</option>
+                    <option value="116">The Ghost Bus Tours (ID: 116)</option>
+                    <option value="22">Witches Tour (ID: 22)</option>
+                    <option value="126">The Classic Tour (ID: 126)</option>
+                    <option value="108">The Classic Tour (ID: 108)</option>
+                    <option value="110">Edinburgh Bus Tours & City Sightseeing Hub (ID: 110)</option>
+                    <option value="115">Scotland Welcome | Tourist Information (ID: 115)</option>
+                    <option value="9">Neil Shelton (ID: 9)</option>
+                    <option value="21">Lashmire (ID: 21)</option>
+                    <option value="18">Lashmire (ID: 18)</option>
+                    <option value="19">Lashmire (ID: 19)</option>
+                    <option value="129">Lashmire (ID: 129)</option>
+                    <option value="90">Lashmire (ID: 90)</option>
+                    <option value="46">Lashmire 2 (ID: 46)</option>
+                    <option value="89">Lashmire (ID: 89)</option>
+                    <option value="76">Lashmire (ID: 76)</option>
+                    <option value="96">Lashmire (ID: 96)</option>
+                    <option value="121">Lashmire (ID: 121)</option>
+                    <option value="131">lashmire (ID: 131)</option>
+                    <option value="135">Lashmire (ID: 135)</option>
+                    <option value="35">Lashmire Ltd (ID: 35)</option>
+                    <option value="36">Lashmire Ltd (ID: 36)</option>
+                    <option value="37">Lashmire Ltd (ID: 37)</option>
+                    <option value="40">Lashmire Ltd (ID: 40)</option>
+                    <option value="57">Lashmire Ltd (ID: 57)</option>
+                    <option value="74">Lashmire Ltd (ID: 74)</option>
+                    <option value="102">Lashmire Ltd (ID: 102)</option>
+                    <option value="130">Lashmire Ltd (ID: 130)</option>
+                    <option value="29">Aan websolution (ID: 29)</option>
+                    <option value="84">AAn (ID: 84)</option>
+                    <option value="120">AANWebSolutions (ID: 120)</option>
+                    <option value="125">AANWebSolutions (ID: 125)</option>
+                    <option value="133">AANWebSolutions - Web & Mobile App Development Company (ID: 133)</option>
+                    <option value="47">Allianz (ID: 47)</option>
+                    <option value="50">Allianz (ID: 50)</option>
+                    <option value="104">Allianz (ID: 104)</option>
+                    <option value="103">Union Tailoring (ID: 103)</option>
+                    <option value="113">Monte Testaccio (ID: 113)</option>
+                    <option value="128">Monte Testaccio (ID: 128)</option>
+                    <option value="23">Location one (ID: 23)</option>
+                    <option value="25">Location two (ID: 25)</option>
+                    <option value="26">Location three (ID: 26)</option>
+                    <option value="30">Location Four (ID: 30)</option>
+                    <option value="31">Location Five (ID: 31)</option>
+                    <option value="32">Location Six (ID: 32)</option>
+                    <option value="33">Location Seven (ID: 33)</option>
+                    <option value="34">Location Eight (ID: 34)</option>
+                    <option value="38">Location new form (ID: 38)</option>
+                    <option value="42">Step 2 Fail Test (ID: 42)</option>
+                    <option value="73">Pop up cancel check (ID: 73)</option>
+                    <option value="91">Test Account (ID: 91)</option>
+                    <option value="132">test (ID: 132)</option>
+                    <option value="86">USA (ID: 86)</option>
+                    <option value="136">SiteGround.com (ID: 136)</option>
+                    <option value="custom">Custom Company ID</option>
+                </select>
+            </div>
+            <div class="custom-company-input" id="custom-company-input" style="display: none;">
+                <label for="custom-company-id">Enter Company ID:</label>
+                <div class="input-group">
+                    <input type="text" id="custom-company-id" placeholder="Enter Company ID">
+                    <button onclick="selectCustomCompany()">Select</button>
+                </div>
+            </div>
+            <button id="start-chat-btn" onclick="startChat()" class="start-chat-button" disabled>
+                Start Chat Analysis
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Container (hidden initially) -->
+    <div class="chat-container" id="chat-container" style="display: none;">
+        <div class="company-header">
+            <h3 id="selected-company-name">Company Name</h3>
+            <button onclick="backToCompanySelection()" class="back-button">← Change Company</button>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <div class="loader" id="loader"></div>
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedCompany = null;
+        let selectedCompanyName = null;
+
+        // Company selection functions
+        function handleCompanySelection() {
+            const selectElement = document.getElementById('company-select');
+            const selectedValue = selectElement.value;
+            const customInput = document.getElementById('custom-company-input');
+            const startBtn = document.getElementById('start-chat-btn');
+
+            if (selectedValue === 'custom') {
+                customInput.style.display = 'block';
+                startBtn.disabled = true;
+            } else if (selectedValue) {
+                customInput.style.display = 'none';
+                selectedCompany = selectedValue;
+                selectedCompanyName = getCompanyName(selectedValue);
+                startBtn.disabled = false;
+            } else {
+                customInput.style.display = 'none';
+                startBtn.disabled = true;
+            }
+        }
+
+        function selectCustomCompany() {
+            const customId = document.getElementById('custom-company-id').value.trim();
+            if (customId) {
+                selectedCompany = customId;
+                selectedCompanyName = `Company ${customId}`;
+                document.getElementById('start-chat-btn').disabled = false;
+            }
+        }
+
+        function getCompanyName(companyId) {
+            const companyNames = {
+                '9': 'Neil Shelton',
+                '21': 'Lashmire',
+                '18': 'Lashmire',
+                '19': 'Lashmire',
+                '22': 'Witches Tour',
+                '23': 'Location one',
+                '25': 'Location two',
+                '26': 'Location three',
+                '129': 'Lashmire',
+                '127': 'The Ghost Bus Tours Edinburgh',
+                '29': 'Aan websolution',
+                '30': 'Location Four',
+                '31': 'Location Five',
+                '32': 'Location Six',
+                '122': 'The Ghost Bus Tours',
+                '33': 'Location Seven',
+                '34': 'Location Eight',
+                '35': 'Lashmire Ltd',
+                '36': 'Lashmire Ltd',
+                '37': 'Lashmire Ltd',
+                '38': 'Location new form',
+                '40': 'Lashmire Ltd',
+                '42': 'Step 2 Fail Test',
+                '90': 'Lashmire',
+                '46': 'Lashmire 2',
+                '47': 'Allianz',
+                '86': 'USA',
+                '89': 'Lashmire',
+                '50': 'Allianz',
+                '84': 'AAn',
+                '76': 'Lashmire',
+                '57': 'Lashmire Ltd',
+                '73': 'Pop up cancel check',
+                '74': 'Lashmire Ltd',
+                '91': 'Test Account',
+                '116': 'The Ghost Bus Tours',
+                '96': 'Lashmire',
+                '102': 'Lashmire Ltd',
+                '104': 'Allianz',
+                '103': 'Union Tailoring',
+                '113': 'Monte Testaccio',
+                '115': 'Scotland Welcome | Tourist Information | Tour, Attraction & Activity Tickets',
+                '126': 'The Classic Tour',
+                '108': 'The Classic Tour',
+                '110': 'Edinburgh Bus Tours & City Sightseeing Hub',
+                '121': 'Lashmire',
+                '120': 'AANWebSolutions',
+                '125': 'AANWebSolutions',
+                '128': 'Monte Testaccio',
+                '131': 'lashmire',
+                '132': 'test',
+                '130': 'Lashmire Ltd',
+                '133': 'AANWebSolutions - Web & Mobile App Development Company',
+                '135': 'Lashmire',
+                '134': 'The Ghost Bus Tours Edinburgh',
+                '136': 'SiteGround.com'
+            }
+
+            return companyNames[companyId] || `Company ${companyId}`;
+        }
+
+        function startChat() {
+            if (selectedCompany) {
+                showChatInterface();
+            }
+        }
+
+        function showChatInterface() {
+            document.getElementById('company-selection-card').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'block';
+            document.getElementById('selected-company-name').textContent = selectedCompanyName;
+        }
+
+        function backToCompanySelection() {
+            document.getElementById('company-selection-card').style.display = 'block';
+            document.getElementById('chat-container').style.display = 'none';
+            document.getElementById('custom-company-input').style.display = 'none';
+            document.getElementById('custom-company-id').value = '';
+            document.getElementById('company-select').value = '';
+            document.getElementById('start-chat-btn').disabled = true;
+            selectedCompany = null;
+            selectedCompanyName = null;
+            
+            // Clear messages
+            document.getElementById('messages').innerHTML = '';
+        }
+
+        // Chat functionality
+        document.getElementById('message-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        async function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const messages = document.getElementById('messages');
+            const loader = document.getElementById('loader');
+            const userMessage = messageInput.value;
+
+            if (userMessage.trim() === '') return;
+
+            const userMessageElem = document.createElement('div');
+            userMessageElem.textContent = `You: ${userMessage}`;
+            userMessageElem.className = 'message user';
+            messages.appendChild(userMessageElem);
+
+            messageInput.value = '';
+            loader.style.display = 'inline-block';
+
+            try {
+                // Use selected company
+                if (!selectedCompany) {
+                    throw new Error('No company selected');
+                }
+                
+                const response = await fetch(`/chat?company=${selectedCompany}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'dfg345agdSDF7314wegfdSDFdsF'
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
+
+                const data = await response.json();
+                loader.style.display = 'none';
+
+                const botMessageElem = document.createElement('div');
+                botMessageElem.className = 'message bot';
+                if (data.response) {
+                    botMessageElem.textContent = `Bot: ${data.response}`;
+                } else {
+                    botMessageElem.textContent = `Bot: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.`;
+                }
+                messages.appendChild(botMessageElem);
+            } catch (error) {
+                loader.style.display = 'none';
+                const errorMessageElem = document.createElement('div');
+                errorMessageElem.className = 'message bot';
+                errorMessageElem.textContent = `Bot: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.\nError: ${error.message}`;
+                messages.appendChild(errorMessageElem);
+            }
+
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+    </script>
+</body>
+</html>
