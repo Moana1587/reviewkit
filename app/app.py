@@ -226,6 +226,47 @@ def setup_file_for_company(client, company_id, company_name, reviews):
         print(f"Error setting up PDF file: {e}")
         return None
 
+def log_conversation(company_id, company_name, question, answer):
+    """Log question and answer to a text file"""
+    try:
+        # Create logs directory if it doesn't exist
+        logs_dir = 'logs'
+        os.makedirs(logs_dir, exist_ok=True)
+        
+        # Create a log file per company with date
+        current_date = datetime.now().strftime('%Y%m%d')
+        log_filename = f"{logs_dir}/chat_log_{company_id}_{current_date}.txt"
+        
+        # Prepare log entry
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        separator = "=" * 80
+        
+        # Detect if this is an error message
+        is_error = any(keyword in answer.lower() for keyword in [
+            'error', 'failed', 'not found', 'no response', 'no reviews found'
+        ])
+        
+        log_entry = f"\n{separator}\n"
+        log_entry += f"Company: {company_name} (ID: {company_id})\n"
+        log_entry += f"Timestamp: {timestamp}\n"
+        if is_error:
+            log_entry += f"Status: ⚠️ ERROR\n"
+        else:
+            log_entry += f"Status: ✓ SUCCESS\n"
+        log_entry += f"{separator}\n\n"
+        log_entry += f"QUESTION:\n{question}\n\n"
+        log_entry += f"ANSWER:\n{answer}\n\n"
+        log_entry += f"{separator}\n"
+        
+        # Append to log file
+        with open(log_filename, 'a', encoding='utf-8') as f:
+            f.write(log_entry)
+        
+        print(f"Conversation logged to: {log_filename}")
+        
+    except Exception as e:
+        print(f"Error logging conversation: {e}")
+
 
 # Define the SQLite model
 class OpenAICreds(sqlite_db.Model):
@@ -268,6 +309,7 @@ def check_company():
 
     client = OpenAI(api_key=open_ai_key)
     conn = None
+    company_name = None  # Initialize company_name for error handling
 
     try:
         # Connect to MySQL and fetch reviews
@@ -275,10 +317,14 @@ def check_company():
         company_name, reviews = fetch_reviews_for_company(conn, company)
         
         if not company_name:
-            return jsonify({'response': 'Company not found'}), 200
+            error_msg = 'Company not found'
+            log_conversation(company, 'Unknown Company', user_input, error_msg)
+            return jsonify({'response': error_msg}), 200
         
         if not reviews:
-            return jsonify({'response': f'No reviews found for {company_name}'}), 200
+            error_msg = f'No reviews found for {company_name}'
+            log_conversation(company, company_name, user_input, error_msg)
+            return jsonify({'response': error_msg}), 200
 
         # Check if we have existing file for this company
         record = OpenAICreds.query.filter_by(company_id=company).first()
@@ -289,7 +335,9 @@ def check_company():
             uploaded_file = setup_file_for_company(client, company, company_name, reviews)
             
             if not uploaded_file:
-                return jsonify({'response': 'Failed to create file'}), 500
+                error_msg = 'Failed to create file'
+                log_conversation(company, company_name, user_input, error_msg)
+                return jsonify({'response': error_msg}), 500
             
             # Create or update record
             if not record:
@@ -422,19 +470,30 @@ def check_company():
                 # Clean up file citation references
                 response_text = clean_response_text(response_text)
                 
+                # Log the conversation
+                log_conversation(company, company_name, user_input, response_text)
+                
                 return jsonify({'response': response_text})
             else:
-                return jsonify({'response': 'No response generated'}), 500
+                error_msg = 'No response generated'
+                log_conversation(company, company_name, user_input, error_msg)
+                return jsonify({'response': error_msg}), 500
         else:
-            return jsonify({'response': f'Assistant run failed with status: {run_status.status}'}), 500
+            error_msg = f'Assistant run failed with status: {run_status.status}'
+            log_conversation(company, company_name, user_input, error_msg)
+            return jsonify({'response': error_msg}), 500
 
     except BadRequestError as e:
         print(f"OpenAI BadRequestError: {e}")
-        return jsonify({'response': f'OpenAI API error: {str(e)}'}), 400
+        error_msg = f'OpenAI API error: {str(e)}'
+        log_conversation(company, company_name or 'Unknown', user_input, error_msg)
+        return jsonify({'response': error_msg}), 400
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        return jsonify({'response': str(e)}), 500
+        error_msg = f'Error: {str(e)}'
+        log_conversation(company, company_name or 'Unknown', user_input, error_msg)
+        return jsonify({'response': error_msg}), 500
 
     finally:
         if conn:
