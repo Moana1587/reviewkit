@@ -60,7 +60,7 @@ def fetch_reviews_for_company(conn, company_id):
         return company_name, reviews
 
 def clean_response_text(text):
-    """Remove file citation references from OpenAI response text"""
+    """Remove file citation references and document/file mentions from OpenAI response text"""
     import re
     
     # Remove patterns like 【4:0†source】, 【1:0†source】, etc.
@@ -78,6 +78,37 @@ def clean_response_text(text):
     # Also remove any remaining citation patterns that might be different
     # Remove patterns like [1], [2], etc. that might be citation numbers
     cleaned_text = re.sub(r'\[\d+\]', '', cleaned_text)
+    
+    # Replace common document/file references with natural language
+    replacements = [
+        (r'[Tt]he PDF file contains', 'There are'),
+        (r'[Tt]he PDF contains', 'There are'),
+        (r'[Tt]he PDF shows', 'The reviews show'),
+        (r'[Tt]he PDF indicates', 'The analysis indicates'),
+        (r'[Tt]he document contains', 'There are'),
+        (r'[Tt]he document shows', 'The reviews show'),
+        (r'[Tt]he document indicates', 'The analysis indicates'),
+        (r'[Tt]he file contains', 'There are'),
+        (r'[Tt]he file shows', 'The reviews show'),
+        (r'[Tt]he file indicates', 'The analysis indicates'),
+        (r'[Bb]ased on the document', 'Based on the reviews'),
+        (r'[Bb]ased on the PDF', 'Based on the reviews'),
+        (r'[Bb]ased on the file', 'Based on the reviews'),
+        (r'[Aa]ccording to the document', 'According to the reviews'),
+        (r'[Aa]ccording to the PDF', 'According to the reviews'),
+        (r'[Aa]ccording to the file', 'According to the reviews'),
+        (r'[Ii]n the document', 'in the reviews'),
+        (r'[Ii]n the PDF', 'in the reviews'),
+        (r'[Ii]n the file', 'in the reviews'),
+        (r'[Tt]he data shows', 'The reviews show'),
+        (r'[Tt]he data indicates', 'The analysis indicates'),
+        (r'[Ff]rom the document', 'from the reviews'),
+        (r'[Ff]rom the PDF', 'from the reviews'),
+        (r'[Ff]rom the file', 'from the reviews'),
+    ]
+    
+    for pattern, replacement in replacements:
+        cleaned_text = re.sub(pattern, replacement, cleaned_text)
     
     # Clean up any extra spaces that might be left
     cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
@@ -298,20 +329,45 @@ def check_company():
         5. **Statistical Analysis**: Calculate and interpret review metrics
         6. **Recommendation Engine**: Suggest specific improvements based on review analysis
         
-        RESPONSE RULES - YOU MUST FOLLOW THESE EXACTLY:
-        - ALWAYS search the review database first using the file search tool
-        - Speak naturally as if you're directly analyzing the reviews
-        - NEVER EVER mention: "document", "file", "data", "PDF", "attachment", "uploaded file", "provided file"
-        - NEVER say: "The document contains...", "According to the file...", "The PDF shows...", "Based on the data..."
+        ⚠️ ABSOLUTE RESPONSE RULES - FOLLOW THESE EXACTLY OR YOUR RESPONSE WILL BE REJECTED:
         
-        INSTEAD USE THESE NATURAL PHRASES:
-        - "There are X reviews..." instead of "The document contains X reviews..."
-        - "The reviews show..." instead of "The document shows..."
-        - "Based on customer feedback..." instead of "According to the data..."
-        - "The analysis reveals..." instead of "The file indicates..."
-        - "Customers have mentioned..." instead of "The document mentions..."
-        - "Review statistics indicate..." instead of "The data shows..."
-        - "I found X reviews..." instead of "The document contains X reviews..."
+        🚫 FORBIDDEN WORDS - NEVER USE THESE:
+        - "document" / "documents"
+        - "file" / "files" / "PDF" / "text file"
+        - "data" (when referring to the review source)
+        - "attachment" / "uploaded"
+        - "provided information"
+        
+        🚫 FORBIDDEN PHRASES - NEVER SAY:
+        - "The document contains..." ❌
+        - "The PDF file contains..." ❌
+        - "The PDF shows..." ❌
+        - "According to the file..." ❌
+        - "Based on the data..." ❌
+        - "The file indicates..." ❌
+        - "In the document..." ❌
+        - "From the document..." ❌
+        
+        ✅ REQUIRED PHRASES - USE THESE INSTEAD:
+        - "There are X reviews..." ✓
+        - "The reviews show..." ✓
+        - "Based on customer feedback..." ✓
+        - "The analysis reveals..." ✓
+        - "Customers have mentioned..." ✓
+        - "I found X reviews..." ✓
+        - "Looking at the reviews..." ✓
+        - "Customer feedback indicates..." ✓
+        - "The ratings show..." ✓
+        
+        EXAMPLES OF CORRECT RESPONSES:
+        ❌ Wrong: "The PDF file contains a total of 11 reviews."
+        ✅ Correct: "There are 11 reviews in total."
+        
+        ❌ Wrong: "Based on the document, the average rating is 4.5 stars."
+        ✅ Correct: "The average rating is 4.5 stars."
+        
+        ❌ Wrong: "The file shows positive sentiment."
+        ✅ Correct: "The reviews show positive sentiment."
         
         OTHER REQUIREMENTS:
         - Provide specific examples from actual reviews when relevant
@@ -322,7 +378,7 @@ def check_company():
         - Be concise but comprehensive in your analysis
         - Always base answers on actual review content
         
-        Remember: Speak as a knowledgeable analyst who has reviewed the feedback, NOT as someone reading a document.
+        Remember: You are a review analyst with direct access to customer feedback. Speak naturally about the reviews themselves, NEVER about documents or files.
         """
 
         # Create assistant with file search capability
