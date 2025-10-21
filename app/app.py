@@ -392,8 +392,17 @@ def check_company():
             # Use existing assistant
             assistant.id = record.assistant_id
         
-        # Create new thread for each request to avoid caching issues
-        thread_id = start_new_chat(client)
+        # Reuse existing thread to maintain conversation history
+        if not record.thread_id:
+            # Create new thread only if one doesn't exist
+            thread_id = start_new_chat(client)
+            record.thread_id = thread_id
+            sqlite_db.session.commit()
+            print(f"Created new thread: {thread_id}")
+        else:
+            # Reuse existing thread to maintain context
+            thread_id = record.thread_id
+            print(f"Reusing existing thread: {thread_id}")
 
         # Add user message to thread with file attachment
         add_message(client, thread_id, user_input, record.file_id)

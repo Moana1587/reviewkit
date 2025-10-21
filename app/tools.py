@@ -142,10 +142,11 @@ def get_latest_message(client, thread_id):
     messages = client.beta.threads.messages.list(thread_id=thread_id)
     if messages.data:
         # Return the latest assistant message, not user message
-        for message in reversed(messages.data):
+        # messages.data is already in reverse chronological order (newest first)
+        for message in messages.data:
             if message.role == 'assistant':
                 return message
         # If no assistant message found, return the latest message
-        return messages.data[-1]
+        return messages.data[0]
     return None
 
