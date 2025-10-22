@@ -486,7 +486,7 @@
             botMessageElem.appendChild(contentDiv);
             messages.appendChild(botMessageElem);
             
-            let fullResponse = 'Bot: ';
+            let fullResponse = 'Review Kit: ';
 
             try {
                 // Use selected company
@@ -552,7 +552,7 @@
                                     console.log('Streaming complete');
                                 } else if (data.error) {
                                     // Handle error
-                                    contentDiv.textContent = `Bot: Error - ${data.error}`;
+                                    contentDiv.textContent = `Review Kit: Error - ${data.error}`;
                                 }
                             } catch (e) {
                                 console.error('Error parsing SSE data:', e);
@@ -563,7 +563,7 @@
 
             } catch (error) {
                 loader.style.display = 'none';
-                contentDiv.textContent = `Bot: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.\nError: ${error.message}`;
+                contentDiv.textContent = `Review Kit: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.\nError: ${error.message}`;
             }
 
             messages.scrollTop = messages.scrollHeight;
