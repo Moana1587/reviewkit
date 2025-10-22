@@ -60,60 +60,23 @@ def fetch_reviews_for_company(conn, company_id):
         return company_name, reviews
 
 def clean_response_text(text):
-    """Remove file citation references and document/file mentions from OpenAI response text"""
+    """Remove ONLY citation references like 【4:0†source】 from text - keep everything else unchanged"""
     import re
     
     # Remove patterns like 【4:0†source】, 【1:0†source】, etc.
-    # This pattern matches 【 followed by any characters and †source】
     cleaned_text = re.sub(r'【[^】]*†source】', '', text)
     
     # Remove patterns like 【4:0†reviews_134_20251020_131556.txt】, etc.
-    # This pattern matches 【 followed by any characters and †filename】
     cleaned_text = re.sub(r'【[^】]*†[^】]*】', '', cleaned_text)
     
     # Remove patterns like 【4:0†file】, etc.
-    # This pattern matches 【 followed by any characters and †file】
     cleaned_text = re.sub(r'【[^】]*†file】', '', cleaned_text)
     
-    # Also remove any remaining citation patterns that might be different
     # Remove patterns like [1], [2], etc. that might be citation numbers
     cleaned_text = re.sub(r'\[\d+\]', '', cleaned_text)
     
-    # Replace common document/file references with natural language
-    replacements = [
-        (r'[Tt]he PDF file contains', 'There are'),
-        (r'[Tt]he PDF contains', 'There are'),
-        (r'[Tt]he PDF shows', 'The reviews show'),
-        (r'[Tt]he PDF indicates', 'The analysis indicates'),
-        (r'[Tt]he document contains', 'There are'),
-        (r'[Tt]he document shows', 'The reviews show'),
-        (r'[Tt]he document indicates', 'The analysis indicates'),
-        (r'[Tt]he file contains', 'There are'),
-        (r'[Tt]he file shows', 'The reviews show'),
-        (r'[Tt]he file indicates', 'The analysis indicates'),
-        (r'[Bb]ased on the document', 'Based on the reviews'),
-        (r'[Bb]ased on the PDF', 'Based on the reviews'),
-        (r'[Bb]ased on the file', 'Based on the reviews'),
-        (r'[Aa]ccording to the document', 'According to the reviews'),
-        (r'[Aa]ccording to the PDF', 'According to the reviews'),
-        (r'[Aa]ccording to the file', 'According to the reviews'),
-        (r'[Ii]n the document', 'in the reviews'),
-        (r'[Ii]n the PDF', 'in the reviews'),
-        (r'[Ii]n the file', 'in the reviews'),
-        (r'[Tt]he data shows', 'The reviews show'),
-        (r'[Tt]he data indicates', 'The analysis indicates'),
-        (r'[Ff]rom the document', 'from the reviews'),
-        (r'[Ff]rom the PDF', 'from the reviews'),
-        (r'[Ff]rom the file', 'from the reviews'),
-    ]
-    
-    for pattern, replacement in replacements:
-        cleaned_text = re.sub(pattern, replacement, cleaned_text)
-    
-    # Clean up any extra spaces that might be left
-    cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
-    
-    return cleaned_text.strip()
+    # Return the text with ONLY citations removed - no other changes
+    return cleaned_text
 
 def create_review_document(company_name, reviews):
     """Create a formatted document from reviews for vector store"""
@@ -296,6 +259,37 @@ def initialize_database():
 def index():
     return render_template('index.html')
 
+@app.route('/reset-company/<company_id>', methods=['POST'])
+def reset_company(company_id):
+    """Reset assistant and thread for a company (useful for troubleshooting)"""
+    try:
+        record = OpenAICreds.query.filter_by(company_id=company_id).first()
+        if record:
+            old_assistant = record.assistant_id
+            old_thread = record.thread_id
+            
+            # Clear the assistant and thread
+            record.assistant_id = None
+            record.thread_id = None
+            sqlite_db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': f'Reset complete for company {company_id}',
+                'old_assistant_id': old_assistant,
+                'old_thread_id': old_thread
+            })
+        else:
+            return jsonify({
+                'success': True,
+                'message': f'No records found for company {company_id} (nothing to reset)'
+            })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 @app.route('/chat', methods=['POST'])
 def check_company():
     company = request.args.get('company')
@@ -359,6 +353,12 @@ def check_company():
         assistant_description = f"AI assistant specialized in analyzing customer reviews for {company_name}"
         assistant_instructions = f"""
         You are a specialized AI assistant for analyzing customer reviews for {company_name}.
+        
+        GREETING RESPONSES:
+        When users greet you with "hi", "hello", "hey", or similar greetings, respond warmly and professionally:
+        - "Hi! How can I help you with {company_name}'s review analysis today?"
+        - "Hello! I'm here to help you analyze customer feedback for {company_name}. What would you like to know?"
+        - Be friendly and welcoming, then offer assistance
         
         CRITICAL INSTRUCTION: You have direct access to {company_name}'s customer review database. You MUST use the file search tool to analyze the reviews.
         
@@ -426,19 +426,49 @@ def check_company():
         - Be concise but comprehensive in your analysis
         - Always base answers on actual review content
         
+        FORMATTING REQUIREMENTS - CRITICAL FOR READABILITY:
+        - When listing multiple reviews, put each review on a NEW LINE
+        - Add a blank line between different reviews for better readability
+        - Use bullet points or numbered lists for multiple items
+        - Break long paragraphs into shorter, digestible sections
+        - Use proper spacing and line breaks to improve readability
+        
+        EXAMPLE OF GOOD FORMATTING:
+        "Here are some reviews from September 2025:
+        
+        1. **Marcus Machoy** - Rated 5 stars on 30-09-2025:
+           "8/5 stars. Definitely join in. Tommy Terror was fantastic..."
+        
+        2. **Miranda Miller** - Rated 5 stars on 29-09-2025:
+           "We had so much fun on this ghost bus tour!..."
+        
+        3. **Jo-Anne Stobbart** - Rated 5 stars on 27-09-2025:
+           "Has the best time! The tour guide was very funny..."
+        
         Remember: You are a review analyst with direct access to customer feedback. Speak naturally about the reviews themselves, NEVER about documents or files.
         """
 
-        # Create assistant with file search capability
-        assistant = create_assistant(client, assistant_name, assistant_description, assistant_instructions)
-        
-        # Store assistant ID in database
+        # Create or reuse assistant
         if not record.assistant_id:
+            # Create new assistant only if one doesn't exist
+            print(f"Creating new assistant for {company_name}...")
+            assistant = create_assistant(client, assistant_name, assistant_description, assistant_instructions)
             record.assistant_id = assistant.id
             sqlite_db.session.commit()
+            print(f"Assistant created: {assistant.id}")
         else:
-            # Use existing assistant
-            assistant.id = record.assistant_id
+            # Reuse existing assistant
+            print(f"Reusing existing assistant: {record.assistant_id}")
+            try:
+                assistant = get_assistant(client, record.assistant_id)
+                print(f"✓ Successfully retrieved assistant {record.assistant_id}")
+            except Exception as e:
+                print(f"✗ Failed to retrieve assistant {record.assistant_id}: {e}")
+                print(f"Creating new assistant...")
+                assistant = create_assistant(client, assistant_name, assistant_description, assistant_instructions)
+                record.assistant_id = assistant.id
+                sqlite_db.session.commit()
+                print(f"New assistant created: {assistant.id}")
         
         # Reuse existing thread to maintain conversation history
         if not record.thread_id:
@@ -453,33 +483,84 @@ def check_company():
             print(f"Reusing existing thread: {thread_id}")
 
         # Add user message to thread with file attachment
-        add_message(client, thread_id, user_input, record.file_id)
+        print(f"Adding message to thread {thread_id} with file {record.file_id}")
+        try:
+            add_message(client, thread_id, user_input, record.file_id)
+            print(f"✓ Message added successfully")
+        except Exception as e:
+            print(f"✗ Error adding message: {e}")
+            raise
         
         # Run the assistant
+        print(f"Running assistant {assistant.id} on thread {thread_id}")
         run_status = run_chat(client, thread_id, assistant.id)
+        print(f"Run completed with status: {run_status.status}")
         
         if run_status.status == 'completed':
             # Get the latest message
             latest_message = get_latest_message(client, thread_id)
             if latest_message and latest_message.content:
-                response_text = ""
+                # Extract raw response from OpenAI
+                raw_response = ""
                 for content_block in latest_message.content:
                     if hasattr(content_block, 'text') and content_block.text:
-                        response_text += content_block.text.value
+                        raw_response += content_block.text.value
+                
+                # Print raw response for debugging
+                print("\n" + "="*80)
+                print("RAW AI RESPONSE:")
+                print("="*80)
+                print(raw_response)
+                print("="*80 + "\n")
                 
                 # Clean up file citation references
-                response_text = clean_response_text(response_text)
+                cleaned_response = clean_response_text(raw_response)
+                
+                # Print cleaned response
+                print("CLEANED RESPONSE:")
+                print("="*80)
+                print(cleaned_response)
+                print("="*80 + "\n")
                 
                 # Log the conversation
-                log_conversation(company, company_name, user_input, response_text)
+                log_conversation(company, company_name, user_input, cleaned_response)
                 
-                return jsonify({'response': response_text})
+                # Return both raw and cleaned responses
+                return jsonify({
+                    'response': cleaned_response
+                })
             else:
                 error_msg = 'No response generated'
                 log_conversation(company, company_name, user_input, error_msg)
                 return jsonify({'response': error_msg}), 500
         else:
+            # Build detailed error message
             error_msg = f'Assistant run failed with status: {run_status.status}'
+            
+            # Add specific error details if available
+            if hasattr(run_status, 'last_error') and run_status.last_error:
+                error_code = getattr(run_status.last_error, 'code', 'unknown')
+                error_message = getattr(run_status.last_error, 'message', 'No details available')
+                error_msg += f'\n\nError Details:\n{error_code}: {error_message}'
+                
+                print(f"✗ Assistant Run Failed:")
+                print(f"   Status: {run_status.status}")
+                print(f"   Error Code: {error_code}")
+                print(f"   Error Message: {error_message}")
+                
+                # Add helpful suggestions based on error type
+                if 'rate_limit' in error_code.lower():
+                    error_msg += '\n\nSuggestion: Please try again in a few moments (rate limit exceeded).'
+                elif 'token' in error_code.lower() or 'length' in error_code.lower():
+                    error_msg += '\n\nSuggestion: Try asking a more specific question (message too long).'
+                elif 'server' in error_code.lower() or 'internal' in error_code.lower():
+                    error_msg += '\n\nSuggestion: OpenAI service may be experiencing issues. Please try again in a moment.'
+                elif 'invalid' in error_code.lower():
+                    error_msg += '\n\nSuggestion: There may be an issue with the assistant configuration. Please contact support.'
+            else:
+                error_msg += '\n\nThis is usually a temporary issue. Please try your question again.'
+                print(f"✗ Assistant Run Failed: {run_status.status} (no error details available)")
+            
             log_conversation(company, company_name, user_input, error_msg)
             return jsonify({'response': error_msg}), 500
 

@@ -53,22 +53,86 @@ def get_messages_in_chat(client, thread):
     return messages
 
 # Description: "Run the thread with the assistant"
-def run_chat(client, thread, assistant):
-    run = client.beta.threads.runs.create(
-        thread_id=thread,
-        assistant_id=assistant,
-    )
+def run_chat(client, thread, assistant, max_retries=3):
+    """
+    Run the assistant with retry logic for handling failures
+    """
+    for attempt in range(max_retries):
+        try:
+            run = client.beta.threads.runs.create(
+                thread_id=thread,
+                assistant_id=assistant,
+            )
 
-# Wait for the run to complete
-    while True:
-        run_status = client.beta.threads.runs.retrieve(
-            thread_id=thread,
-            run_id=run.id
-        )
-        if run_status.status in ['completed', 'failed', 'cancelled', 'expired']:
-            break
-        time.sleep(1)
-
+            # Wait for the run to complete
+            max_wait_time = 300  # 5 minutes max wait
+            elapsed_time = 0
+            
+            while elapsed_time < max_wait_time:
+                run_status = client.beta.threads.runs.retrieve(
+                    thread_id=thread,
+                    run_id=run.id
+                )
+                
+                if run_status.status == 'completed':
+                    print(f"✓ Assistant run completed successfully")
+                    return run_status
+                    
+                elif run_status.status == 'failed':
+                    error_message = f"Run failed"
+                    if hasattr(run_status, 'last_error') and run_status.last_error:
+                        error_code = getattr(run_status.last_error, 'code', 'unknown')
+                        error_msg = getattr(run_status.last_error, 'message', 'unknown')
+                        error_message += f": {error_code} - {error_msg}"
+                    
+                    print(f"✗ Attempt {attempt + 1}/{max_retries}: {error_message}")
+                    
+                    # Don't retry on final attempt
+                    if attempt < max_retries - 1:
+                        print(f"  Retrying in 2 seconds...")
+                        time.sleep(2)
+                        break  # Break inner loop to retry
+                    else:
+                        print(f"  Max retries reached. Returning failed status.")
+                        return run_status
+                        
+                elif run_status.status in ['cancelled', 'expired']:
+                    print(f"✗ Run {run_status.status}")
+                    return run_status
+                    
+                elif run_status.status == 'requires_action':
+                    print(f"⚠ Run requires action - this shouldn't happen with file_search")
+                    return run_status
+                
+                # Still in progress
+                time.sleep(1)
+                elapsed_time += 1
+            
+            # If we exceeded max wait time
+            if elapsed_time >= max_wait_time:
+                print(f"✗ Run timed out after {max_wait_time} seconds")
+                # Cancel the run
+                try:
+                    client.beta.threads.runs.cancel(thread_id=thread, run_id=run.id)
+                except:
+                    pass
+                
+                if attempt < max_retries - 1:
+                    print(f"  Retrying...")
+                    time.sleep(2)
+                    continue
+                else:
+                    return run_status
+                    
+        except Exception as e:
+            print(f"✗ Exception during run (attempt {attempt + 1}/{max_retries}): {str(e)}")
+            if attempt < max_retries - 1:
+                time.sleep(2)
+                continue
+            else:
+                raise
+    
+    # Should not reach here, but just in case
     return run_status
 
 #Upload file
