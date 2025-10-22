@@ -475,13 +475,27 @@
             messageInput.value = '';
             loader.style.display = 'inline-block';
 
+            // Create bot message element for streaming
+            const botMessageElem = document.createElement('div');
+            botMessageElem.className = 'message bot';
+            
+            // Create formatted content div with white-space preservation
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'bot-message-content';
+            contentDiv.style.whiteSpace = 'pre-wrap'; // Preserve line breaks and spaces
+            botMessageElem.appendChild(contentDiv);
+            messages.appendChild(botMessageElem);
+            
+            let fullResponse = 'Bot: ';
+
             try {
                 // Use selected company
                 if (!selectedCompany) {
                     throw new Error('No company selected');
                 }
                 
-                const response = await fetch(`/chat?company=${selectedCompany}`, {
+                // Use streaming endpoint
+                const response = await fetch(`/chat-stream?company=${selectedCompany}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -490,29 +504,66 @@
                     body: JSON.stringify({ message: userMessage })
                 });
 
-                const data = await response.json();
                 loader.style.display = 'none';
 
-                const botMessageElem = document.createElement('div');
-                botMessageElem.className = 'message bot';
-                
-                if (data.response) {
-                    // Create cleaned response (main display)
-                    const cleanedResponse = document.createElement('div');
-                    cleanedResponse.className = 'bot-message-content';
-                    cleanedResponse.textContent = `Bot: ${data.response}`;
-                    cleanedResponse.title = 'Cleaned Response (citations removed)';
-                    botMessageElem.appendChild(cleanedResponse);
-                } else {
-                    botMessageElem.textContent = `Bot: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.`;
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-                messages.appendChild(botMessageElem);
+
+                // Read the streaming response
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    
+                    if (done) {
+                        break;
+                    }
+
+                    // Decode the chunk
+                    buffer += decoder.decode(value, { stream: true });
+                    
+                    // Process complete messages (lines ending with \n\n)
+                    const lines = buffer.split('\n\n');
+                    buffer = lines.pop(); // Keep incomplete line in buffer
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const jsonStr = line.substring(6); // Remove 'data: ' prefix
+                            try {
+                                const data = JSON.parse(jsonStr);
+                                
+                                if (data.chunk) {
+                                    // Append chunk to full response
+                                    fullResponse += data.chunk;
+                                    
+                                    // Convert markdown bold (**text**) to HTML <strong>
+                                    const htmlResponse = fullResponse.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                                    
+                                    // Update content div with formatted HTML
+                                    contentDiv.innerHTML = htmlResponse;
+                                    
+                                    // Auto-scroll as text appears
+                                    messages.scrollTop = messages.scrollHeight;
+                                } else if (data.done) {
+                                    // Response complete
+                                    console.log('Streaming complete');
+                                } else if (data.error) {
+                                    // Handle error
+                                    contentDiv.textContent = `Bot: Error - ${data.error}`;
+                                }
+                            } catch (e) {
+                                console.error('Error parsing SSE data:', e);
+                            }
+                        }
+                    }
+                }
+
             } catch (error) {
                 loader.style.display = 'none';
-                const errorMessageElem = document.createElement('div');
-                errorMessageElem.className = 'message bot';
-                errorMessageElem.textContent = `Bot: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.\nError: ${error.message}`;
-                messages.appendChild(errorMessageElem);
+                contentDiv.textContent = `Bot: Sorry, at the moment I can't process such request. Please try to repeat in other words or be more precise.\nError: ${error.message}`;
             }
 
             messages.scrollTop = messages.scrollHeight;

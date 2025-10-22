@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, current_app
+from flask import Flask, request, jsonify, render_template, current_app, Response, stream_with_context
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from tools import *
@@ -8,8 +8,9 @@ import os
 import re
 import pymysql
 import time
+import json
 from openai import OpenAI, BadRequestError
-from tools import get_latest_message
+from tools import get_latest_message, run_chat_streaming
 
 
 app = Flask(__name__)
@@ -78,39 +79,37 @@ def clean_response_text(text):
     # Return the text with ONLY citations removed - no other changes
     return cleaned_text
 
-def create_review_document(company_name, reviews):
-    """Create a formatted document from reviews for vector store"""
+def create_review_document(company_name, reviews, max_reviews=500):
+    """Create a formatted document from reviews for vector store
+    
+    Args:
+        company_name: Name of the company
+        reviews: List of reviews (already sorted by date DESC)
+        max_reviews: Maximum number of reviews to include (for speed)
+    """
     if not reviews:
         return f"Company: {company_name}\nNo reviews available."
     
+    # Limit reviews for speed (use most recent ones since they're already sorted DESC)
+    total_reviews = len(reviews)
+    reviews_to_use = reviews[:max_reviews] if len(reviews) > max_reviews else reviews
+    
+    # Calculate statistics from limited set
+    ratings = [review[1] for review in reviews_to_use if review[1] is not None]
+    avg_rating = sum(ratings) / len(ratings) if ratings else 0
+    
+    # Create compact document (faster file search)
     document = f"Company: {company_name}\n"
-    document += f"Total Reviews: {len(reviews)}\n\n"
+    if total_reviews > max_reviews:
+        document += f"Showing {len(reviews_to_use)} most recent of {total_reviews} reviews | Avg: {avg_rating:.1f} stars\n\n"
+    else:
+        document += f"Total: {len(reviews_to_use)} reviews | Avg: {avg_rating:.1f} stars\n\n"
     
-    # Calculate basic statistics
-    ratings = [review[1] for review in reviews if review[1] is not None]
-    if ratings:
-        avg_rating = sum(ratings) / len(ratings)
-        document += f"Average Rating: {avg_rating:.2f}\n"
-        document += f"Rating Distribution:\n"
-        for i in range(1, 6):
-            count = sum(1 for r in ratings if r == i)
-            document += f"  {i} stars: {count} reviews\n"
-        document += "\n"
-    
-    # Add individual reviews
-    document += "Individual Reviews:\n"
-    document += "=" * 50 + "\n\n"
-    
-    for i, review in enumerate(reviews, 1):
+    # Add individual reviews (compact format for speed)
+    for review in reviews_to_use:
         display_name, rating, comment, create_time, review_id = review
-        
-        document += f"Review #{i}:\n"
-        document += f"Review ID: {review_id}\n"
-        document += f"Author: {display_name}\n"
-        document += f"Rating: {rating} stars\n"
-        document += f"Date: {create_time}\n"
-        document += f"Comment: {comment}\n"
-        document += "-" * 30 + "\n\n"
+        # Compact format: ID|Name|Rating|Date|Comment
+        document += f"{review_id}|{display_name}|{rating}★|{create_time}|{comment}\n"
     
     return document
 
@@ -290,6 +289,129 @@ def reset_company(company_id):
             'error': str(e)
         }), 500
 
+@app.route('/chat-stream', methods=['POST'])
+def chat_stream():
+    """Streaming chat endpoint for real-time responses"""
+    company = request.args.get('company')
+    user_input = request.json.get('message')
+
+    if not company:
+        return jsonify({'error': 'No company parameter provided'}), 400
+
+    if not open_ai_key:
+        return jsonify({'error': 'OpenAI API key not configured'}), 500
+
+    client = OpenAI(api_key=open_ai_key)
+    conn = None
+    company_name = None
+
+    def generate():
+        nonlocal conn, company_name
+        try:
+            # Connect to MySQL and fetch reviews
+            conn = get_mysql_connection()
+            company_name, reviews = fetch_reviews_for_company(conn, company)
+            
+            if not company_name:
+                yield f"data: {json.dumps({'error': 'Company not found'})}\n\n"
+                return
+            
+            if not reviews:
+                yield f"data: {json.dumps({'error': f'No reviews found for {company_name}'})}\n\n"
+                return
+
+            # Check if we have existing file for this company
+            record = OpenAICreds.query.filter_by(company_id=company).first()
+            
+            if not record or not record.file_id:
+                # Create new file
+                uploaded_file = setup_file_for_company(client, company, company_name, reviews)
+                
+                if not uploaded_file:
+                    yield f"data: {json.dumps({'error': 'Failed to create file'})}\n\n"
+                    return
+                
+                # Create or update record
+                if not record:
+                    record = OpenAICreds(company_id=company)
+                    sqlite_db.session.add(record)
+                
+                record.file_id = uploaded_file.id
+                record.updated_date = datetime.utcnow()
+                sqlite_db.session.commit()
+
+            # Create assistant with vector store
+            assistant_name = f"Review Analyst for {company_name}"
+            assistant_description = f"AI assistant specialized in analyzing customer reviews for {company_name}"
+            assistant_instructions = f"""You are a review analyst for {company_name}. Use file search to analyze customer reviews.
+
+            GREETINGS: Respond warmly (e.g., "Hi! How can I help you with {company_name}'s reviews today?")
+
+            LANGUAGE RULES:
+            ✓ Say: "The reviews show...", "Customers mentioned...", "I found X reviews..."
+            ✗ Never say: "document", "file", "PDF", "data", "attachment"
+
+            FORMAT RULES:
+            - List reviews on separate lines with blank lines between them
+            - Example: "1. **Name** - X stars on DD-MM-YYYY:\n   \"Comment...\"\n\n2. **Name**..."
+            - Be concise but specific
+            - Include reviewer names, ratings, dates from the data
+
+            Search the file to answer all questions about reviews, ratings, trends, and feedback."""
+
+            # Create or reuse assistant
+            if not record.assistant_id:
+                assistant = create_assistant(client, assistant_name, assistant_description, assistant_instructions)
+                record.assistant_id = assistant.id
+                sqlite_db.session.commit()
+            else:
+                try:
+                    assistant = get_assistant(client, record.assistant_id)
+                except Exception as e:
+                    assistant = create_assistant(client, assistant_name, assistant_description, assistant_instructions)
+                    record.assistant_id = assistant.id
+                    sqlite_db.session.commit()
+            
+            # Reuse existing thread to maintain conversation history
+            if not record.thread_id:
+                thread_id = start_new_chat(client)
+                record.thread_id = thread_id
+                sqlite_db.session.commit()
+            else:
+                thread_id = record.thread_id
+
+            # Add user message to thread with file attachment
+            add_message(client, thread_id, user_input, record.file_id)
+            
+            # Stream the response
+            full_response = ""
+            for chunk in run_chat_streaming(client, thread_id, assistant.id):
+                if chunk.startswith('[DONE]'):
+                    # Clean the final response and send completion
+                    cleaned_response = clean_response_text(full_response)
+                    log_conversation(company, company_name, user_input, cleaned_response)
+                    yield f"data: {json.dumps({'done': True})}\n\n"
+                    break
+                elif chunk.startswith('[ERROR'):
+                    yield f"data: {json.dumps({'error': chunk})}\n\n"
+                    break
+                else:
+                    # Send chunk to client
+                    full_response += chunk
+                    # Clean chunk before sending
+                    cleaned_chunk = clean_response_text(chunk)
+                    if cleaned_chunk:  # Only send if chunk has content after cleaning
+                        yield f"data: {json.dumps({'chunk': cleaned_chunk})}\n\n"
+
+        except Exception as e:
+            print(f"Streaming error: {e}")
+            yield f"data: {json.dumps({'error': str(e)})}\n\n"
+        finally:
+            if conn:
+                conn.close()
+
+    return Response(stream_with_context(generate()), mimetype='text/event-stream')
+
 @app.route('/chat', methods=['POST'])
 def check_company():
     company = request.args.get('company')
@@ -351,102 +473,21 @@ def check_company():
         # Create assistant with vector store
         assistant_name = f"Review Analyst for {company_name}"
         assistant_description = f"AI assistant specialized in analyzing customer reviews for {company_name}"
-        assistant_instructions = f"""
-        You are a specialized AI assistant for analyzing customer reviews for {company_name}.
-        
-        GREETING RESPONSES:
-        When users greet you with "hi", "hello", "hey", or similar greetings, respond warmly and professionally:
-        - "Hi! How can I help you with {company_name}'s review analysis today?"
-        - "Hello! I'm here to help you analyze customer feedback for {company_name}. What would you like to know?"
-        - Be friendly and welcoming, then offer assistance
-        
-        CRITICAL INSTRUCTION: You have direct access to {company_name}'s customer review database. You MUST use the file search tool to analyze the reviews.
-        
-        The review database contains:
-        - Customer names and review IDs
-        - Star ratings (1-5 stars)
-        - Detailed customer comments
-        - Review dates and timestamps
-        - Overall statistics and rating distributions
-        
-        Your capabilities include:
-        1. **Sentiment Analysis**: Analyze the emotional tone and sentiment of reviews
-        2. **Trend Analysis**: Identify patterns over time in customer feedback
-        3. **Topic Analysis**: Extract key themes and topics from review content
-        4. **Customer Insights**: Provide actionable insights for business improvement
-        5. **Statistical Analysis**: Calculate and interpret review metrics
-        6. **Recommendation Engine**: Suggest specific improvements based on review analysis
-        
-        ⚠️ ABSOLUTE RESPONSE RULES - FOLLOW THESE EXACTLY OR YOUR RESPONSE WILL BE REJECTED:
-        
-        🚫 FORBIDDEN WORDS - NEVER USE THESE:
-        - "document" / "documents"
-        - "file" / "files" / "PDF" / "text file"
-        - "data" (when referring to the review source)
-        - "attachment" / "uploaded"
-        - "provided information"
-        
-        🚫 FORBIDDEN PHRASES - NEVER SAY:
-        - "The document contains..." ❌
-        - "The PDF file contains..." ❌
-        - "The PDF shows..." ❌
-        - "According to the file..." ❌
-        - "Based on the data..." ❌
-        - "The file indicates..." ❌
-        - "In the document..." ❌
-        - "From the document..." ❌
-        
-        ✅ REQUIRED PHRASES - USE THESE INSTEAD:
-        - "There are X reviews..." ✓
-        - "The reviews show..." ✓
-        - "Based on customer feedback..." ✓
-        - "The analysis reveals..." ✓
-        - "Customers have mentioned..." ✓
-        - "I found X reviews..." ✓
-        - "Looking at the reviews..." ✓
-        - "Customer feedback indicates..." ✓
-        - "The ratings show..." ✓
-        
-        EXAMPLES OF CORRECT RESPONSES:
-        ❌ Wrong: "The PDF file contains a total of 11 reviews."
-        ✅ Correct: "There are 11 reviews in total."
-        
-        ❌ Wrong: "Based on the document, the average rating is 4.5 stars."
-        ✅ Correct: "The average rating is 4.5 stars."
-        
-        ❌ Wrong: "The file shows positive sentiment."
-        ✅ Correct: "The reviews show positive sentiment."
-        
-        OTHER REQUIREMENTS:
-        - Provide specific examples from actual reviews when relevant
-        - Use concrete numbers and percentages
-        - Format dates as d-m-Y h:i:s when referencing specific reviews
-        - Highlight both positive and negative feedback patterns
-        - Suggest actionable recommendations for management
-        - Be concise but comprehensive in your analysis
-        - Always base answers on actual review content
-        
-        FORMATTING REQUIREMENTS - CRITICAL FOR READABILITY:
-        - When listing multiple reviews, put each review on a NEW LINE
-        - Add a blank line between different reviews for better readability
-        - Use bullet points or numbered lists for multiple items
-        - Break long paragraphs into shorter, digestible sections
-        - Use proper spacing and line breaks to improve readability
-        
-        EXAMPLE OF GOOD FORMATTING:
-        "Here are some reviews from September 2025:
-        
-        1. **Marcus Machoy** - Rated 5 stars on 30-09-2025:
-           "8/5 stars. Definitely join in. Tommy Terror was fantastic..."
-        
-        2. **Miranda Miller** - Rated 5 stars on 29-09-2025:
-           "We had so much fun on this ghost bus tour!..."
-        
-        3. **Jo-Anne Stobbart** - Rated 5 stars on 27-09-2025:
-           "Has the best time! The tour guide was very funny..."
-        
-        Remember: You are a review analyst with direct access to customer feedback. Speak naturally about the reviews themselves, NEVER about documents or files.
-        """
+        assistant_instructions = f"""You are a review analyst for {company_name}. Use file search to analyze customer reviews.
+
+        GREETINGS: Respond warmly (e.g., "Hi! How can I help you with {company_name}'s reviews today?")
+
+        LANGUAGE RULES:
+        ✓ Say: "The reviews show...", "Customers mentioned...", "I found X reviews..."
+        ✗ Never say: "document", "file", "PDF", "data", "attachment"
+
+        FORMAT RULES:
+        - List reviews on separate lines with blank lines between them
+        - Example: "1. **Name** - X stars on DD-MM-YYYY:\n   \"Comment...\"\n\n2. **Name**..."
+        - Be concise but specific
+        - Include reviewer names, ratings, dates from the data
+
+        Search the file to answer all questions about reviews, ratings, trends, and feedback."""
 
         # Create or reuse assistant
         if not record.assistant_id:

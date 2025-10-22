@@ -9,7 +9,8 @@ def create_assistant(client, name, description, instructions):
     description=description,
     instructions=instructions,
     tools=[{"type": "file_search"}],
-    model="gpt-4o"
+    model="gpt-4o-mini",  # Much faster than gpt-4o (2-3x speed improvement)
+    temperature=0.3  # Lower temperature = faster, more consistent responses
     )
     return assistant
 
@@ -213,4 +214,42 @@ def get_latest_message(client, thread_id):
         # If no assistant message found, return the latest message
         return messages.data[0]
     return None
+
+def run_chat_streaming(client, thread, assistant):
+    """
+    Run the assistant with streaming support for real-time response
+    Yields text chunks as they're generated
+    """
+    try:
+        # Create and stream the run
+        with client.beta.threads.runs.stream(
+            thread_id=thread,
+            assistant_id=assistant,
+        ) as stream:
+            for event in stream:
+                # Handle text delta events (streaming text chunks)
+                if event.event == 'thread.message.delta':
+                    for content in event.data.delta.content:
+                        if hasattr(content, 'text') and hasattr(content.text, 'value'):
+                            yield content.text.value
+                
+                # Handle completion
+                elif event.event == 'thread.run.completed':
+                    yield '[DONE]'
+                
+                # Handle errors
+                elif event.event == 'thread.run.failed':
+                    yield f'[ERROR: Run failed]'
+                    break
+                    
+                elif event.event == 'thread.run.cancelled':
+                    yield f'[ERROR: Run cancelled]'
+                    break
+                    
+                elif event.event == 'thread.run.expired':
+                    yield f'[ERROR: Run expired]'
+                    break
+                    
+    except Exception as e:
+        yield f'[ERROR: {str(e)}]'
 
