@@ -1,16 +1,9 @@
-"""
-Semantic Analysis Service for Review Categorization and Sentiment Analysis
-"""
-
 import json
 from openai import OpenAI
 import os
 from datetime import datetime
 
 class SemanticAnalyzer:
-    """Service for analyzing reviews semantically using OpenAI"""
-    
-    # Define standard topics for review analysis
     TOPICS = [
         "Tour Guide/Host Performance",
         "Tour Content and Experience",
@@ -114,60 +107,62 @@ class SemanticAnalyzer:
         
         prompt = f"""Analyze the following customer reviews for {company_name} and categorize them into these EXACT topics:
 
-1. Tour Guide/Host Performance
-2. Tour Content and Experience
-3. Organization & Management
-4. Atmosphere and Special Effects
-5. Value for Money
+                1. Tour Guide/Host Performance
+                2. Tour Content and Experience
+                3. Organization & Management
+                4. Atmosphere and Special Effects
+                5. Value for Money
 
-For each review, determine:
-1. Which topic(s) it relates to (a review can relate to multiple topics)
-2. The sentiment for each topic: positive, neutral, or negative
+                For each review, determine:
+                1. Which topic(s) it relates to (a review can relate to multiple topics)
+                2. The sentiment for each topic: positive, neutral, or negative
 
-Guidelines:
-- "Tour Guide/Host Performance": Comments about guides, hosts, staff friendliness, knowledge, professionalism
-- "Tour Content and Experience": Comments about what they saw, did, learned, activities, attractions
-- "Organization & Management": Comments about booking, timing, scheduling, logistics, planning
-- "Atmosphere and Special Effects": Comments about ambiance, mood, setting, special features
-- "Value for Money": Comments about pricing, worth, value, cost-effectiveness
+                Guidelines:
+                - "Tour Guide/Host Performance": Comments about guides, hosts, staff friendliness, knowledge, professionalism
+                - "Tour Content and Experience": Comments about what they saw, did, learned, activities, attractions
+                - "Organization & Management": Comments about booking, timing, scheduling, logistics, planning
+                - "Atmosphere and Special Effects": Comments about ambiance, mood, setting, special features
+                - "Value for Money": Comments about pricing, worth, value, cost-effectiveness
 
-Sentiment Classification:
-- Positive: 4-5 stars OR clearly positive language
-- Negative: 1-2 stars OR clearly negative language
-- Neutral: 3 stars OR mixed/neutral language
+                Sentiment Classification:
+                - Positive: 4-5 stars OR clearly positive language
+                - Negative: 1-2 stars OR clearly negative language
+                - Neutral: 3 stars OR mixed/neutral language
 
-Reviews:
-{reviews_text}
+                Reviews:
+                {reviews_text}
 
-Return a JSON object with this EXACT structure:
-{{
-  "topics": [
-    {{
-      "name": "Tour Guide/Host Performance",
-      "review_count": <number of reviews mentioning this topic>,
-      "mention_count": <total mentions across reviews>,
-      "positive_count": <count>,
-      "neutral_count": <count>,
-      "negative_count": <count>,
-      "sentiment_score": <average score -1 to 1>,
-      "reviews": [
-        {{
-          "review_id": <review ID>,
-          "review_index": <review number>,
-          "reviewer_name": "<name>",
-          "rating": <stars>,
-          "date": "<date>",
-          "excerpt": "<relevant quote from review>",
-          "sentiment": "positive|neutral|negative"
-        }}
-      ]
-    }},
-    ... (repeat for all 5 topics)
-  ]
-}}
+                Return a JSON object with this EXACT structure:
+                {{
+                "topics": [
+                    {{
+                    "name": "Tour Guide/Host Performance",
+                    "review_count": <number of reviews mentioning this topic>,
+                    "mention_count": <total mentions across reviews>,
+                    "positive_count": <count>,
+                    "neutral_count": <count>,
+                    "negative_count": <count>,
+                    "reviews": [
+                        {{
+                        "review_id": <review ID>,
+                        "review_index": <review number>,
+                        "reviewer_name": "<name>",
+                        "rating": <stars>,
+                        "date": "<date>",
+                        "excerpt": "<relevant quote from review>",
+                        "sentiment": "positive|neutral|negative"
+                        }}
+                    ]
+                    }},
+                    ... (repeat for all 5 topics)
+                ]
+                }}
 
-Include only reviews that actually mention each topic. The excerpt should be the most relevant sentence or phrase from the review for that topic."""
-        
+                Include only reviews that actually mention each topic. The excerpt should be the most relevant sentence or phrase from the review for that topic.
+                
+                Note: Sentiment score will be calculated automatically using the formula: 
+                ((positive_count - negative_count + neutral_count * 0.5) / total) * 5"""
+                        
         return prompt
     
     def _structure_analysis_result(self, raw_result, formatted_reviews):
@@ -181,14 +176,31 @@ Include only reviews that actually mention each topic. The excerpt should be the
         
         # Process each topic
         for topic_data in raw_result.get("topics", []):
+            positive_count = topic_data.get("positive_count", 0)
+            neutral_count = topic_data.get("neutral_count", 0)
+            negative_count = topic_data.get("negative_count", 0)
+            
+            # Calculate sentiment score using the new formula
+            total = positive_count + neutral_count + negative_count
+            if total > 0:
+                sentiment_score = ((positive_count - negative_count + neutral_count * 0.5) / total) * 5
+                # Ensure score is between 0 and 5
+                sentiment_score = max(0, min(5, sentiment_score))
+            else:
+                sentiment_score = 0
+            
+            # Extract keywords from reviews
+            keywords = self._extract_keywords_from_reviews(topic_data.get("reviews", []))
+            
             topic = {
                 "name": topic_data.get("name", "Unknown"),
                 "review_count": topic_data.get("review_count", 0),
                 "mention_count": topic_data.get("mention_count", 0),
-                "positive_count": topic_data.get("positive_count", 0),
-                "neutral_count": topic_data.get("neutral_count", 0),
-                "negative_count": topic_data.get("negative_count", 0),
-                "sentiment_score": topic_data.get("sentiment_score", 0),
+                "positive_count": positive_count,
+                "neutral_count": neutral_count,
+                "negative_count": negative_count,
+                "sentiment_score": round(sentiment_score, 2),
+                "keywords": keywords,
                 "reviews": topic_data.get("reviews", [])
             }
             structured["topics"].append(topic)
@@ -206,10 +218,41 @@ Include only reviews that actually mention each topic. The excerpt should be the
                     "neutral_count": 0,
                     "negative_count": 0,
                     "sentiment_score": 0,
+                    "keywords": [],
                     "reviews": []
                 })
         
         return structured
+    
+    def _extract_keywords_from_reviews(self, reviews):
+        """Extract keywords from review excerpts"""
+        import re
+        from collections import Counter
+        
+        # Common words to exclude
+        stop_words = {
+            'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 
+            'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been',
+            'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
+            'could', 'should', 'may', 'might', 'must', 'can', 'this', 'that',
+            'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they',
+            'his', 'her', 'its', 'our', 'their', 'am', 'to', 'from', 'tour', 'tours'
+        }
+        
+        words = []
+        for review in reviews:
+            excerpt = review.get('excerpt', '')
+            # Extract words (3+ characters only)
+            review_words = re.findall(r'\b[a-z]{3,}\b', excerpt.lower())
+            # Filter out stop words
+            words.extend([w for w in review_words if w not in stop_words])
+        
+        # Count and return top 10 keywords
+        if words:
+            counter = Counter(words)
+            return [word for word, count in counter.most_common(10)]
+        
+        return []
     
     def _empty_analysis(self, company_name):
         """Return empty analysis structure when no reviews exist"""
@@ -225,6 +268,7 @@ Include only reviews that actually mention each topic. The excerpt should be the
                     "neutral_count": 0,
                     "negative_count": 0,
                     "sentiment_score": 0,
+                    "keywords": [],
                     "reviews": []
                 }
                 for topic in self.TOPICS
@@ -254,8 +298,7 @@ Include only reviews that actually mention each topic. The excerpt should be the
             radar_data.append({
                 "topic": topic["name"],
                 "score": round(score, 2),
-                "total_mentions": topic["mention_count"]
-            })
+             })
         
         return {"radar_points": radar_data}
 

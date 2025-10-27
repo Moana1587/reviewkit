@@ -259,7 +259,7 @@ def register_routes(app):
             analyzer = SemanticAnalyzer()
             radar_data = analyzer.calculate_radar_data(analysis_data)
             
-            return jsonify({
+            result = {
                 'company_id': analysis.company_id,
                 'company_name': analysis.company_name,
                 'total_reviews': analysis.total_reviews,
@@ -267,7 +267,8 @@ def register_routes(app):
                 'radar_data': radar_data,
                 'created_date': analysis.created_date.isoformat(),
                 'updated_date': analysis.updated_date.isoformat()
-            })
+            }
+            return jsonify(result)
             
         except Exception as e:
             return jsonify({
@@ -320,8 +321,8 @@ def register_routes(app):
             
             # Calculate radar data
             radar_data = analyzer.calculate_radar_data(analysis_result)
-            
-            return jsonify({
+        
+            result = {
                 'success': True,
                 'company_id': company_id,
                 'company_name': company_name,
@@ -329,7 +330,8 @@ def register_routes(app):
                 'analysis': analysis_result,
                 'radar_data': radar_data,
                 'message': 'Semantic analysis generated successfully'
-            })
+            }
+            return jsonify(result)
             
         except Exception as e:
             return jsonify({
