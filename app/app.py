@@ -4,6 +4,7 @@ A well-structured Flask application for managing and analyzing customer reviews 
 """
 
 from flask import Flask, current_app
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import sys
@@ -13,6 +14,13 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Enable CORS for all routes and origins
+CORS(app, resources={r"/*": {
+    "origins": "*",
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization"]
+}})
 
 # Configure SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.sqlite'

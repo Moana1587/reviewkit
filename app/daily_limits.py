@@ -9,7 +9,7 @@ def get_or_create_user_plan(company_id):
     """Get or create a user plan for a company"""
     plan = UserPlan.query.filter_by(company_id=company_id).first()
     if not plan:
-        plan = UserPlan(company_id=company_id, plan_name='free', daily_limit=5)  # Set to 5 for testing
+        plan = UserPlan(company_id=company_id, plan_name='free', daily_limit=100)
         db.session.add(plan)
         db.session.commit()
     return plan
@@ -73,7 +73,7 @@ def get_usage_status(company_id):
         'reset_time': 'midnight'
     }
 
-def update_user_plan(company_id, plan_name='free', daily_limit=10):
+def update_user_plan(company_id, plan_name='free', daily_limit=100):
     """Update user plan for a company"""
     plan = get_or_create_user_plan(company_id)
     plan.plan_name = plan_name
