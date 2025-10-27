@@ -4,7 +4,7 @@ Database utility functions
 
 import os
 import pymysql
-from models import db, OpenAICreds, UserPlan, DailyUsage
+from models import db, OpenAICreds, UserPlan, DailyUsage, SemanticAnalysis
 from datetime import datetime
 
 # MySQL configuration
@@ -35,6 +35,7 @@ def initialize_database():
     check_and_create_table(OpenAICreds.__tablename__)
     check_and_create_table(UserPlan.__tablename__)
     check_and_create_table(DailyUsage.__tablename__)
+    check_and_create_table(SemanticAnalysis.__tablename__)
 
 def fetch_reviews_for_company(conn, company_id):
     """Fetch all reviews for a company and format them for vector store"""

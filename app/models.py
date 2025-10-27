@@ -40,3 +40,17 @@ class DailyUsage(db.Model):
     
     # Ensure one record per company per day
     __table_args__ = (db.UniqueConstraint('company_id', 'usage_date', name='unique_company_date'),)
+
+class SemanticAnalysis(db.Model):
+    """Model for storing semantic analysis results"""
+    __tablename__ = 'semantic_analysis'
+    id = db.Column(db.Integer, primary_key=True)
+    company_id = db.Column(db.String(80), nullable=False)
+    company_name = db.Column(db.String(255), nullable=False)
+    total_reviews = db.Column(db.Integer, nullable=False, default=0)
+    analysis_data = db.Column(db.Text, nullable=False)  # JSON string with topics, sentiments, and excerpts
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+    # Ensure one record per company (latest analysis)
+    __table_args__ = (db.UniqueConstraint('company_id', name='unique_company_analysis'),)

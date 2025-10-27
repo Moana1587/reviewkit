@@ -54,6 +54,12 @@ class OpenAIService:
         - Be concise but specific
         - Include reviewer names, ratings, dates from the data
 
+        CRITICAL - CONTEXT ISOLATION:
+        - ALWAYS search the file for fresh data - NEVER rely on conversation history
+        - When counting reviews, ONLY count reviews from the file search, NOT from previous messages
+        - Treat each question as independent - ignore reviews mentioned in previous conversation turns
+        - Example: If user asks "How many reviews?", search the file and count ONLY the reviews in the file, not reviews mentioned earlier in the conversation
+
         GENERAL QUESTIONS:
         For questions NOT related to reviews (like "What color is the sky?", "How are you?", etc.), respond politely:
         "Sorry, I can't answer questions not related to reviews. Feel free to ask about reviews, ratings, or customer feedback for {company_name}!"
@@ -68,6 +74,12 @@ class OpenAIService:
         else:
             try:
                 assistant = get_assistant(self.client, record.assistant_id)
+                # Update assistant instructions to ensure latest version is used
+                # This ensures the fix for context isolation is applied to all existing assistants
+                self.client.beta.assistants.update(
+                    assistant_id=assistant.id,
+                    instructions=assistant_instructions
+                )
             except Exception as e:
                 assistant = create_assistant(self.client, assistant_name, assistant_description, assistant_instructions)
                 record.assistant_id = assistant.id

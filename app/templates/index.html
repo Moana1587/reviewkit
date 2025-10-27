@@ -153,6 +153,11 @@
             font-size: 18px;
         }
         
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
         .back-button {
             background-color: #6c757d;
             color: white;
@@ -165,6 +170,28 @@
         
         .back-button:hover {
             background-color: #5a6268;
+        }
+        
+        .new-chat-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .new-chat-button:hover {
+            background-color: #218838;
+        }
+        
+        .new-chat-button:disabled {
+            background-color: #94d3a2;
+            cursor: not-allowed;
         }
         .messages {
             border-bottom: 1px solid #eee;
@@ -258,6 +285,31 @@
             0%, 80%, 100% { opacity: 0; }
             40% { opacity: 1; }
         }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        .notification.error {
+            background-color: #dc3545;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -345,7 +397,12 @@
     <div class="chat-container" id="chat-container" style="display: none;">
         <div class="company-header">
             <h3 id="selected-company-name">Company Name</h3>
-            <button onclick="backToCompanySelection()" class="back-button">← Change Company</button>
+            <div class="header-buttons">
+                <button onclick="clearThread()" class="new-chat-button" id="new-chat-btn">
+                    New Chat
+                </button>
+                <button onclick="backToCompanySelection()" class="back-button">← Change Company</button>
+            </div>
         </div>
         <div class="messages" id="messages"></div>
         <div class="input-container">
@@ -476,6 +533,75 @@
             
             // Clear messages
             document.getElementById('messages').innerHTML = '';
+        }
+
+        // Clear thread function
+        async function clearThread() {
+            if (!selectedCompany) {
+                showNotification('No company selected', true);
+                return;
+            }
+
+            const newChatBtn = document.getElementById('new-chat-btn');
+            const originalText = newChatBtn.innerHTML;
+            
+            try {
+                // Disable button and show loading
+                newChatBtn.disabled = true;
+                newChatBtn.innerHTML = '⏳ Clearing...';
+                
+                // Call the clear-thread API
+                const response = await fetch(`/clear-thread/${selectedCompany}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Clear the messages in UI
+                    document.getElementById('messages').innerHTML = '';
+                    
+                    // Show success notification
+                    showNotification('✓ Chat cleared! Starting fresh conversation.');
+                    
+                    // Add a system message to the chat
+                    const systemMessageElem = document.createElement('div');
+                    systemMessageElem.className = 'message bot';
+                    systemMessageElem.style.backgroundColor = '#d1ecf1';
+                    systemMessageElem.style.color = '#0c5460';
+                    systemMessageElem.style.border = '1px solid #bee5eb';
+                    systemMessageElem.innerHTML = '<strong>🔄 New conversation started</strong><br>Previous questions and answers cleared. Ask me anything!';
+                    document.getElementById('messages').appendChild(systemMessageElem);
+                } else {
+                    showNotification('Failed to clear chat: ' + result.error, true);
+                }
+            } catch (error) {
+                console.error('Error clearing thread:', error);
+                showNotification('Error clearing chat. Please try again.', true);
+            } finally {
+                // Re-enable button
+                newChatBtn.disabled = false;
+                newChatBtn.innerHTML = originalText;
+            }
+        }
+
+        // Show notification function
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = 'notification' + (isError ? ' error' : '');
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
 
         // Chat functionality
