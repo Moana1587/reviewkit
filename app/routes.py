@@ -243,11 +243,22 @@ def register_routes(app):
 
     @app.route('/semantic-analysis/<company_id>', methods=['GET'])
     def get_semantic_analysis(company_id):
-        """Get cached semantic analysis for a company"""
+        """Get cached semantic analysis for a company (returns 404 if older than 1 day)"""
         try:
             analysis = SemanticAnalysis.query.filter_by(company_id=company_id).first()
             
             if not analysis:
+                return jsonify({
+                    'error': 'No analysis found. Please generate analysis first.'
+                }), 404
+            
+            # Check if analysis is older than 1 day
+            from datetime import timedelta
+            current_time = datetime.utcnow()
+            time_since_update = current_time - analysis.updated_date
+            
+            # If analysis is older than 1 day, return 404
+            if time_since_update > timedelta(days=1):
                 return jsonify({
                     'error': 'No analysis found. Please generate analysis first.'
                 }), 404
