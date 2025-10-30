@@ -64,12 +64,12 @@ echo ""
 # =========================================================================
 echo -e "${CYAN}[2/10]${NC} Installing required dependencies..."
 
-# Install Python
-if ! command -v python3 &> /dev/null; then
-    apt install python3 python3-pip python3-venv -y
-    print_status "Python installed"
+# Install Python 3.13
+if ! command -v python3.13 &> /dev/null; then
+    apt install python3.13 python3.13-venv python3.13-dev -y
+    print_status "Python 3.13 installed"
 else
-    print_status "Python already installed ($(python3 --version))"
+    print_status "Python 3.13 already installed ($(python3.13 --version))"
 fi
 
 # Install Nginx
@@ -89,7 +89,7 @@ else
 fi
 
 # Install build tools
-apt install build-essential libssl-dev libffi-dev python3-dev -y -qq
+apt install build-essential libssl-dev libffi-dev -y -qq
 print_status "Build tools installed"
 echo ""
 
@@ -105,7 +105,7 @@ if [ -d "venv" ]; then
     rm -rf venv
 fi
 
-python3 -m venv venv
+python3.13 -m venv venv
 print_status "Virtual environment created"
 echo ""
 
