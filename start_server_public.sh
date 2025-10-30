@@ -34,7 +34,7 @@ echo "  Starting server on all network interfaces..."
 echo ""
 
 # Run Flask with public access
-python app.py --host 0.0.0.0 --port 8000
+python3.13 app.py --host 0.0.0.0 --port 8000
 
 # Pause equivalent
 read -p "Press Enter to continue..."
