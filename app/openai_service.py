@@ -14,6 +14,59 @@ class OpenAIService:
         self.open_ai_key = os.getenv('OPEN_AI_KEY')
         self.client = OpenAI(api_key=self.open_ai_key) if self.open_ai_key else None
 
+    def validate_api_key(self):
+        """Validate if the OpenAI API key is valid and working"""
+        validation_result = {
+            "is_configured": False,
+            "is_valid": False,
+            "key_prefix": None,
+            "error": None,
+            "details": None
+        }
+        
+        # Check if key is configured
+        if not self.open_ai_key:
+            validation_result["error"] = "OpenAI API key not configured in environment variables"
+            validation_result["details"] = "Please set OPEN_AI_KEY in your .env file"
+            return validation_result
+        
+        validation_result["is_configured"] = True
+        validation_result["key_prefix"] = self.open_ai_key[:7] + "..." if len(self.open_ai_key) > 7 else "***"
+        
+        # Test the API key by making a simple API call
+        try:
+            # Try to list models (lightweight API call)
+            response = self.client.models.list()
+            
+            # If we get here, the API key is valid
+            validation_result["is_valid"] = True
+            validation_result["details"] = "API key is valid and working"
+            
+            # Get some model info to confirm
+            models = [model.id for model in response.data[:3]]
+            validation_result["available_models_sample"] = models
+            
+            return validation_result
+            
+        except Exception as e:
+            error_str = str(e)
+            validation_result["error"] = "API key validation failed"
+            
+            # Provide helpful error messages
+            if "401" in error_str or "Incorrect API key" in error_str:
+                validation_result["details"] = "API key is invalid or incorrect"
+            elif "429" in error_str or "rate_limit" in error_str.lower():
+                validation_result["details"] = "Rate limit exceeded (but key appears valid)"
+                validation_result["is_valid"] = True  # Key is valid, just rate limited
+            elif "403" in error_str or "forbidden" in error_str.lower():
+                validation_result["details"] = "API key doesn't have required permissions"
+            elif "network" in error_str.lower() or "connection" in error_str.lower():
+                validation_result["details"] = "Network connection error - cannot reach OpenAI API"
+            else:
+                validation_result["details"] = error_str
+            
+            return validation_result
+
     def setup_file_for_company(self, company_id, company_name, reviews):
         """Set up file for a company with their reviews"""
         try:
@@ -98,12 +151,25 @@ class OpenAIService:
         
         return thread_id
 
+    def validate_file(self, file_id):
+        """Validate if a file exists and is accessible in OpenAI"""
+        try:
+            self.client.files.retrieve(file_id)
+            return True
+        except Exception as e:
+            return False
+
     def process_chat_request(self, company_id, user_input, company_name, reviews):
         """Process a chat request for a company"""
         # Check if we have existing file for this company
         record = OpenAICreds.query.filter_by(company_id=company_id).first()
         
-        if not record or not record.file_id:
+        # Validate existing file or create new one
+        file_is_valid = False
+        if record and record.file_id:
+            file_is_valid = self.validate_file(record.file_id)
+        
+        if not record or not record.file_id or not file_is_valid:
             # Create new file
             uploaded_file = self.setup_file_for_company(company_id, company_name, reviews)
             
@@ -130,40 +196,88 @@ class OpenAIService:
         try:
             add_message(self.client, thread_id, user_input, record.file_id)
         except Exception as e:
-            raise
+            # If adding message fails, it might be a thread issue
+            # Try to create a new thread and retry
+            thread_id = start_new_chat(self.client)
+            record.thread_id = thread_id
+            db.session.commit()
+            # Retry adding the message
+            add_message(self.client, thread_id, user_input, record.file_id)
 
         return assistant, thread_id
 
+    def reset_resources_for_recovery(self, company_id):
+        """Reset all resources for a company to recover from errors"""
+        try:
+            record = OpenAICreds.query.filter_by(company_id=company_id).first()
+            if record:
+                # Clear the IDs to force recreation
+                record.assistant_id = None
+                record.thread_id = None
+                record.file_id = None
+                db.session.commit()
+                return True
+        except Exception as e:
+            return False
+    
     def run_chat_streaming(self, company_id, user_input, company_name, reviews):
         """Run streaming chat for a company"""
-        try:
-            assistant, thread_id = self.process_chat_request(company_id, user_input, company_name, reviews)
-            if not assistant:
-                yield f"data: {json.dumps({'error': 'Failed to process request'})}\n\n"
-                return
+        max_recovery_attempts = 1  # Allow one recovery attempt
+        
+        for recovery_attempt in range(max_recovery_attempts + 1):
+            try:
+                assistant, thread_id = self.process_chat_request(company_id, user_input, company_name, reviews)
+                if not assistant:
+                    yield f"data: {json.dumps({'error': 'Failed to process request'})}\n\n"
+                    return
 
-            # Stream the response
-            full_response = ""
-            for chunk in run_chat_streaming(self.client, thread_id, assistant.id):
-                if chunk.startswith('[DONE]'):
-                    # Clean the final response and send completion
-                    cleaned_response = clean_response_text(full_response)
-                    log_conversation(company_id, company_name, user_input, cleaned_response)
-                    yield f"data: {json.dumps({'done': True})}\n\n"
-                    break
-                elif chunk.startswith('[ERROR'):
-                    yield f"data: {json.dumps({'error': chunk})}\n\n"
-                    break
+                # Stream the response
+                full_response = ""
+                had_server_error = False
+                
+                for chunk in run_chat_streaming(self.client, thread_id, assistant.id):
+                    if chunk.startswith('[DONE]'):
+                        # Clean the final response and send completion
+                        cleaned_response = clean_response_text(full_response)
+                        log_conversation(company_id, company_name, user_input, cleaned_response)
+                        yield f"data: {json.dumps({'done': True})}\n\n"
+                        return  # Success!
+                        
+                    elif chunk.startswith('[ERROR'):
+                        # Check if this is a server error we can recover from
+                        if 'server_error' in chunk.lower() and recovery_attempt < max_recovery_attempts:
+                            had_server_error = True
+                            if self.reset_resources_for_recovery(company_id):
+                                yield f"data: {json.dumps({'chunk': 'Recovering from error, please wait...'})}\n\n"
+                                break  # Break to retry with fresh resources
+                        
+                        # Not recoverable or final attempt
+                        yield f"data: {json.dumps({'error': chunk})}\n\n"
+                        return
+                        
+                    else:
+                        # Send chunk to client
+                        full_response += chunk
+                        # Clean chunk before sending
+                        cleaned_chunk = clean_response_text(chunk)
+                        if cleaned_chunk:  # Only send if chunk has content after cleaning
+                            yield f"data: {json.dumps({'chunk': cleaned_chunk})}\n\n"
+                
+                # If we broke out due to server error, continue to retry
+                if had_server_error and recovery_attempt < max_recovery_attempts:
+                    continue
                 else:
-                    # Send chunk to client
-                    full_response += chunk
-                    # Clean chunk before sending
-                    cleaned_chunk = clean_response_text(chunk)
-                    if cleaned_chunk:  # Only send if chunk has content after cleaning
-                        yield f"data: {json.dumps({'chunk': cleaned_chunk})}\n\n"
+                    return
 
-        except Exception as e:
-            yield f"data: {json.dumps({'error': str(e)})}\n\n"
+            except Exception as e:
+                error_msg = str(e)
+                if recovery_attempt < max_recovery_attempts and ('server' in error_msg.lower() or 'not found' in error_msg.lower()):
+                    if self.reset_resources_for_recovery(company_id):
+                        yield f"data: {json.dumps({'chunk': 'Recovering from error, please wait...'})}\n\n"
+                        continue
+                
+                yield f"data: {json.dumps({'error': error_msg})}\n\n"
+                return
 
     def run_chat_regular(self, company_id, user_input, company_name, reviews):
         """Run regular (non-streaming) chat for a company"""
@@ -228,3 +342,168 @@ class OpenAIService:
             error_msg = f'Error: {str(e)}'
             log_conversation(company_id, company_name, user_input, error_msg)
             return None, error_msg
+
+    def cleanup_all_gpt_resources(self):
+        """Clean up all GPT resources including threads, assistants, files, and database records"""
+        if not self.client:
+            return {"error": "OpenAI client not initialized"}
+        
+        cleanup_report = {
+            "threads_deleted": 0,
+            "assistants_deleted": 0,
+            "files_deleted": 0,
+            "db_records_cleaned": 0,
+            "errors": []
+        }
+        
+        try:
+            # Get all OpenAI credentials from database
+            all_records = OpenAICreds.query.all()
+            
+            for record in all_records:
+                # Delete thread
+                if record.thread_id:
+                    try:
+                        self.client.beta.threads.delete(record.thread_id)
+                        cleanup_report["threads_deleted"] += 1
+                        print(f"✓ Deleted thread: {record.thread_id}")
+                    except Exception as e:
+                        cleanup_report["errors"].append(f"Failed to delete thread {record.thread_id}: {str(e)}")
+                        print(f"✗ Failed to delete thread {record.thread_id}: {str(e)}")
+                
+                # Delete assistant
+                if record.assistant_id:
+                    try:
+                        self.client.beta.assistants.delete(record.assistant_id)
+                        cleanup_report["assistants_deleted"] += 1
+                        print(f"✓ Deleted assistant: {record.assistant_id}")
+                    except Exception as e:
+                        cleanup_report["errors"].append(f"Failed to delete assistant {record.assistant_id}: {str(e)}")
+                        print(f"✗ Failed to delete assistant {record.assistant_id}: {str(e)}")
+                
+                # Delete file
+                if record.file_id:
+                    try:
+                        self.client.files.delete(record.file_id)
+                        cleanup_report["files_deleted"] += 1
+                        print(f"✓ Deleted file: {record.file_id}")
+                    except Exception as e:
+                        cleanup_report["errors"].append(f"Failed to delete file {record.file_id}: {str(e)}")
+                        print(f"✗ Failed to delete file {record.file_id}: {str(e)}")
+                
+                # Delete vector store if exists
+                if record.vector_id:
+                    try:
+                        self.client.beta.vector_stores.delete(record.vector_id)
+                        print(f"✓ Deleted vector store: {record.vector_id}")
+                    except Exception as e:
+                        cleanup_report["errors"].append(f"Failed to delete vector store {record.vector_id}: {str(e)}")
+                        print(f"✗ Failed to delete vector store {record.vector_id}: {str(e)}")
+                
+                # Delete database record
+                try:
+                    db.session.delete(record)
+                    cleanup_report["db_records_cleaned"] += 1
+                except Exception as e:
+                    cleanup_report["errors"].append(f"Failed to delete DB record for company {record.company_id}: {str(e)}")
+                    print(f"✗ Failed to delete DB record for company {record.company_id}: {str(e)}")
+            
+            # Commit all database deletions
+            db.session.commit()
+            
+            print("\n" + "="*50)
+            print("CLEANUP SUMMARY")
+            print("="*50)
+            print(f"Threads deleted: {cleanup_report['threads_deleted']}")
+            print(f"Assistants deleted: {cleanup_report['assistants_deleted']}")
+            print(f"Files deleted: {cleanup_report['files_deleted']}")
+            print(f"Database records cleaned: {cleanup_report['db_records_cleaned']}")
+            
+            if cleanup_report['errors']:
+                print(f"\nErrors encountered: {len(cleanup_report['errors'])}")
+                for error in cleanup_report['errors']:
+                    print(f"  - {error}")
+            else:
+                print("\n✓ All resources cleaned successfully!")
+            print("="*50)
+            
+            return cleanup_report
+            
+        except Exception as e:
+            db.session.rollback()
+            cleanup_report["errors"].append(f"Critical error during cleanup: {str(e)}")
+            print(f"\n✗ Critical error during cleanup: {str(e)}")
+            return cleanup_report
+
+    def cleanup_company_gpt_resources(self, company_id):
+        """Clean up GPT resources for a specific company"""
+        if not self.client:
+            return {"error": "OpenAI client not initialized"}
+        
+        cleanup_report = {
+            "company_id": company_id,
+            "thread_deleted": False,
+            "assistant_deleted": False,
+            "file_deleted": False,
+            "db_record_cleaned": False,
+            "errors": []
+        }
+        
+        try:
+            # Get company record
+            record = OpenAICreds.query.filter_by(company_id=company_id).first()
+            
+            if not record:
+                cleanup_report["errors"].append(f"No record found for company_id: {company_id}")
+                return cleanup_report
+            
+            # Delete thread
+            if record.thread_id:
+                try:
+                    self.client.beta.threads.delete(record.thread_id)
+                    cleanup_report["thread_deleted"] = True
+                    print(f"✓ Deleted thread: {record.thread_id}")
+                except Exception as e:
+                    cleanup_report["errors"].append(f"Failed to delete thread: {str(e)}")
+            
+            # Delete assistant
+            if record.assistant_id:
+                try:
+                    self.client.beta.assistants.delete(record.assistant_id)
+                    cleanup_report["assistant_deleted"] = True
+                    print(f"✓ Deleted assistant: {record.assistant_id}")
+                except Exception as e:
+                    cleanup_report["errors"].append(f"Failed to delete assistant: {str(e)}")
+            
+            # Delete file
+            if record.file_id:
+                try:
+                    self.client.files.delete(record.file_id)
+                    cleanup_report["file_deleted"] = True
+                    print(f"✓ Deleted file: {record.file_id}")
+                except Exception as e:
+                    cleanup_report["errors"].append(f"Failed to delete file: {str(e)}")
+            
+            # Delete vector store if exists
+            if record.vector_id:
+                try:
+                    self.client.beta.vector_stores.delete(record.vector_id)
+                    print(f"✓ Deleted vector store: {record.vector_id}")
+                except Exception as e:
+                    cleanup_report["errors"].append(f"Failed to delete vector store: {str(e)}")
+            
+            # Delete database record
+            try:
+                db.session.delete(record)
+                db.session.commit()
+                cleanup_report["db_record_cleaned"] = True
+                print(f"✓ Cleaned database record for company: {company_id}")
+            except Exception as e:
+                db.session.rollback()
+                cleanup_report["errors"].append(f"Failed to delete DB record: {str(e)}")
+            
+            return cleanup_report
+            
+        except Exception as e:
+            cleanup_report["errors"].append(f"Critical error: {str(e)}")
+            return cleanup_report

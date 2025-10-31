@@ -26,6 +26,92 @@ def register_routes(app):
         from flask import render_template
         return render_template('index.html')
 
+    @app.route('/validate-api-key', methods=['GET'])
+    def validate_api_key():
+        """Validate if the OpenAI API key is configured and working"""
+        try:
+            openai_service = OpenAIService()
+            result = openai_service.validate_api_key()
+            
+            # Return appropriate HTTP status code
+            if result['is_valid']:
+                return jsonify(result), 200
+            elif result['is_configured']:
+                return jsonify(result), 401  # Configured but invalid
+            else:
+                return jsonify(result), 503  # Not configured
+                
+        except Exception as e:
+            return jsonify({
+                'is_configured': False,
+                'is_valid': False,
+                'error': 'Validation check failed',
+                'details': str(e)
+            }), 500
+
+    @app.route('/cleanup-gpt/all', methods=['POST'])
+    def cleanup_all_gpt():
+        """Clean up ALL GPT resources for all companies (threads, assistants, files, DB records)"""
+        try:
+            openai_service = OpenAIService()
+            if not openai_service.client:
+                return jsonify({
+                    'success': False,
+                    'error': 'OpenAI API key not configured'
+                }), 500
+            
+            report = openai_service.cleanup_all_gpt_resources()
+            
+            if "error" in report:
+                return jsonify({
+                    'success': False,
+                    'error': report['error']
+                }), 500
+            
+            return jsonify({
+                'success': True,
+                'message': 'All GPT resources cleaned successfully',
+                'report': report
+            })
+            
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+    @app.route('/cleanup-gpt/<company_id>', methods=['POST'])
+    def cleanup_company_gpt(company_id):
+        """Clean up GPT resources for a specific company (thread, assistant, file, DB record)"""
+        try:
+            openai_service = OpenAIService()
+            if not openai_service.client:
+                return jsonify({
+                    'success': False,
+                    'error': 'OpenAI API key not configured'
+                }), 500
+            
+            report = openai_service.cleanup_company_gpt_resources(company_id)
+            
+            if "error" in report and report.get('errors'):
+                return jsonify({
+                    'success': False,
+                    'message': f'Cleanup completed with errors for company {company_id}',
+                    'report': report
+                }), 200
+            
+            return jsonify({
+                'success': True,
+                'message': f'GPT resources cleaned successfully for company {company_id}',
+                'report': report
+            })
+            
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
     @app.route('/reset-company/<company_id>', methods=['POST'])
     def reset_company(company_id):
         """Reset assistant and thread for a company (useful for troubleshooting)"""

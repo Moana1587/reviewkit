@@ -9,7 +9,7 @@ def create_assistant(client, name, description, instructions):
     description=description,
     instructions=instructions,
     tools=[{"type": "file_search"}],
-    model="gpt-4o-mini",  # Much faster than gpt-4o (2-3x speed improvement)
+    model="gpt-4o",  # Using gpt-4o as gpt-4o-mini may have server issues
     temperature=0.3  # Lower temperature = faster, more consistent responses
     )
     return assistant
@@ -76,33 +76,20 @@ def run_chat(client, thread, assistant, max_retries=3):
                 )
                 
                 if run_status.status == 'completed':
-                    print(f"✓ Assistant run completed successfully")
                     return run_status
                     
                 elif run_status.status == 'failed':
-                    error_message = f"Run failed"
-                    if hasattr(run_status, 'last_error') and run_status.last_error:
-                        error_code = getattr(run_status.last_error, 'code', 'unknown')
-                        error_msg = getattr(run_status.last_error, 'message', 'unknown')
-                        error_message += f": {error_code} - {error_msg}"
-                    
-                    print(f"✗ Attempt {attempt + 1}/{max_retries}: {error_message}")
-                    
                     # Don't retry on final attempt
                     if attempt < max_retries - 1:
-                        print(f"  Retrying in 2 seconds...")
                         time.sleep(2)
                         break  # Break inner loop to retry
                     else:
-                        print(f"  Max retries reached. Returning failed status.")
                         return run_status
                         
                 elif run_status.status in ['cancelled', 'expired']:
-                    print(f"✗ Run {run_status.status}")
                     return run_status
                     
                 elif run_status.status == 'requires_action':
-                    print(f"⚠ Run requires action - this shouldn't happen with file_search")
                     return run_status
                 
                 # Still in progress
@@ -111,7 +98,6 @@ def run_chat(client, thread, assistant, max_retries=3):
             
             # If we exceeded max wait time
             if elapsed_time >= max_wait_time:
-                print(f"✗ Run timed out after {max_wait_time} seconds")
                 # Cancel the run
                 try:
                     client.beta.threads.runs.cancel(thread_id=thread, run_id=run.id)
@@ -119,14 +105,12 @@ def run_chat(client, thread, assistant, max_retries=3):
                     pass
                 
                 if attempt < max_retries - 1:
-                    print(f"  Retrying...")
                     time.sleep(2)
                     continue
                 else:
                     return run_status
                     
         except Exception as e:
-            print(f"✗ Exception during run (attempt {attempt + 1}/{max_retries}): {str(e)}")
             if attempt < max_retries - 1:
                 time.sleep(2)
                 continue
@@ -215,41 +199,88 @@ def get_latest_message(client, thread_id):
         return messages.data[0]
     return None
 
-def run_chat_streaming(client, thread, assistant):
+def run_chat_streaming(client, thread, assistant, max_retries=2):
     """
     Run the assistant with streaming support for real-time response
     Yields text chunks as they're generated
+    Includes retry logic for transient errors
     """
-    try:
-        # Create and stream the run
-        with client.beta.threads.runs.stream(
-            thread_id=thread,
-            assistant_id=assistant,
-        ) as stream:
-            for event in stream:
-                # Handle text delta events (streaming text chunks)
-                if event.event == 'thread.message.delta':
-                    for content in event.data.delta.content:
-                        if hasattr(content, 'text') and hasattr(content.text, 'value'):
-                            yield content.text.value
-                
-                # Handle completion
-                elif event.event == 'thread.run.completed':
-                    yield '[DONE]'
-                
-                # Handle errors
-                elif event.event == 'thread.run.failed':
-                    yield f'[ERROR: Run failed]'
-                    break
+    for attempt in range(max_retries):
+        try:
+            # Create and stream the run
+            with client.beta.threads.runs.stream(
+                thread_id=thread,
+                assistant_id=assistant,
+            ) as stream:
+                message_received = False
+                for event in stream:
+                    # Handle text delta events (streaming text chunks)
+                    if event.event == 'thread.message.delta':
+                        message_received = True
+                        for content in event.data.delta.content:
+                            if hasattr(content, 'text') and hasattr(content.text, 'value'):
+                                yield content.text.value
                     
-                elif event.event == 'thread.run.cancelled':
-                    yield f'[ERROR: Run cancelled]'
-                    break
+                    # Handle completion
+                    elif event.event == 'thread.run.completed':
+                        yield '[DONE]'
+                        return  # Success, exit function
                     
-                elif event.event == 'thread.run.expired':
-                    yield f'[ERROR: Run expired]'
-                    break
-                    
-    except Exception as e:
-        yield f'[ERROR: {str(e)}]'
+                    # Handle errors with detailed information
+                    elif event.event == 'thread.run.failed':
+                        error_msg = 'Run failed'
+                        is_retryable = False
+                        
+                        # Try to get detailed error information
+                        if hasattr(event.data, 'last_error') and event.data.last_error:
+                            error_code = getattr(event.data.last_error, 'code', 'unknown')
+                            error_details = getattr(event.data.last_error, 'message', 'No details available')
+                            error_msg += f': {error_code} - {error_details}'
+                            
+                            # Check if error is retryable
+                            if 'server' in error_code.lower() or 'internal' in error_code.lower():
+                                is_retryable = True
+                            
+                            # Add helpful suggestions based on error type
+                            if 'rate_limit' in error_code.lower():
+                                error_msg += ' | Please try again in a few moments (rate limit exceeded).'
+                            elif 'token' in error_code.lower() or 'length' in error_code.lower():
+                                error_msg += ' | Try asking a more specific question (message too long).'
+                            elif is_retryable and attempt < max_retries - 1:
+                                error_msg += ' | Retrying...'
+                                time.sleep(1)  # Brief delay before retry
+                                break  # Break to retry
+                            elif is_retryable:
+                                error_msg += ' | OpenAI service may be experiencing issues. Please try again.'
+                        
+                        # If this was a retryable error and we have retries left, continue to next attempt
+                        if is_retryable and attempt < max_retries - 1:
+                            break
+                        
+                        # Otherwise, yield error and return
+                        yield f'[ERROR: {error_msg}]'
+                        return
+                        
+                    elif event.event == 'thread.run.cancelled':
+                        yield f'[ERROR: Run cancelled - the request was cancelled before completion]'
+                        return
+                        
+                    elif event.event == 'thread.run.expired':
+                        yield f'[ERROR: Run expired - the request took too long and was cancelled. Please try a simpler question.]'
+                        return
+                        
+        except Exception as e:
+            # Check if this is a retryable exception
+            error_str = str(e).lower()
+            is_retryable = 'server' in error_str or 'internal' in error_str or 'timeout' in error_str
+            
+            if is_retryable and attempt < max_retries - 1:
+                time.sleep(1)
+                continue
+            else:
+                yield f'[ERROR: {str(e)}]'
+                return
+    
+    # If we've exhausted all retries
+    yield '[ERROR: Failed after multiple retry attempts. Please try again later.]'
 
