@@ -15,7 +15,12 @@ class SemanticAnalyzer:
     
     def __init__(self):
         self.open_ai_key = os.getenv('OPEN_AI_KEY')
-        self.client = OpenAI(api_key=self.open_ai_key) if self.open_ai_key else None
+        # Add timeout to OpenAI client (60 seconds)
+        self.client = OpenAI(
+            api_key=self.open_ai_key,
+            timeout=60.0,  # 60 second timeout
+            max_retries=2  # Retry failed requests
+        ) if self.open_ai_key else None
         self.detected_business_type = None
         self.dynamic_topics = None
     
@@ -139,7 +144,13 @@ class SemanticAnalyzer:
             return result.get("business_type", "Tour/Activity")
             
         except Exception as e:
-            print(f"Business type detection failed: {str(e)}")
+            error_msg = str(e)
+            print(f"Business type detection failed: {error_msg}")
+            # Log specific errors but continue with fallback
+            if "502" in error_msg or "Bad Gateway" in error_msg:
+                print("OpenAI returned 502 Bad Gateway - using fallback business type")
+            elif "timeout" in error_msg.lower():
+                print("OpenAI request timed out - using fallback business type")
             return "Tour/Activity"  # Default fallback
     
     def _generate_topics_for_business_type(self, business_type):
@@ -214,7 +225,13 @@ class SemanticAnalyzer:
             return topics[:5]
             
         except Exception as e:
-            print(f"Topic generation failed: {str(e)}")
+            error_msg = str(e)
+            print(f"Topic generation failed: {error_msg}")
+            # Log specific errors but continue with fallback
+            if "502" in error_msg or "Bad Gateway" in error_msg:
+                print("OpenAI returned 502 Bad Gateway - using fallback topics")
+            elif "timeout" in error_msg.lower():
+                print("OpenAI request timed out - using fallback topics")
             return self._get_default_topics_structure()
     
     def _get_default_topics_structure(self):
@@ -278,7 +295,18 @@ class SemanticAnalyzer:
             return self._structure_analysis_result(result, formatted_reviews)
             
         except Exception as e:
-            raise Exception(f"OpenAI analysis failed: {str(e)}")
+            error_msg = str(e)
+            # Provide more specific error messages
+            if "502" in error_msg or "Bad Gateway" in error_msg:
+                raise Exception(f"OpenAI API is temporarily unavailable (502 Bad Gateway). Please try again in a few moments.")
+            elif "timeout" in error_msg.lower():
+                raise Exception(f"OpenAI API request timed out. Try again or reduce the number of reviews.")
+            elif "503" in error_msg or "Service Unavailable" in error_msg:
+                raise Exception(f"OpenAI API is temporarily unavailable (503). Please try again later.")
+            elif "429" in error_msg or "rate_limit" in error_msg.lower():
+                raise Exception(f"OpenAI API rate limit exceeded. Please wait and try again.")
+            else:
+                raise Exception(f"OpenAI analysis failed: {error_msg}")
     
     def _create_analysis_prompt(self, company_name, formatted_reviews):
         """Create a detailed prompt for OpenAI analysis using dynamic topics"""
@@ -329,14 +357,14 @@ class SemanticAnalyzer:
         
         prompt = f"""Analyze the following customer reviews for {company_name} (a {self.detected_business_type} business) and categorize them into these EXACT topics:
 
-{topics_list}
+                {topics_list}
 
                 For each review, determine:
                 1. Which topic(s) it relates to (a review can relate to multiple topics)
                 2. The sentiment for each topic: positive, neutral, or negative
 
                 Guidelines for topics:
-{topics_guidelines}
+                {topics_guidelines}
 
                 Sentiment Classification:
                 - Positive: 4-5 stars OR clearly positive language
@@ -349,7 +377,7 @@ class SemanticAnalyzer:
                 Return a JSON object with this EXACT structure:
                 {{
                 "topics": [
-{topics_json_example}
+                    {topics_json_example}
                 ]
                 }}
 
