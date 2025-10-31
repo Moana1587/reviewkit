@@ -19,7 +19,10 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {
     "origins": "*",
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    "allow_headers": ["Content-Type", "Authorization"]
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    "expose_headers": ["Content-Type", "X-Total-Count"],
+    "supports_credentials": False,
+    "max_age": 3600
 }})
 
 # Configure SQLite database
@@ -39,6 +42,15 @@ def initialize_database():
     with current_app.app_context():
         from db_utils import initialize_database
         initialize_database()
+
+# Add CORS headers to all responses (additional safety layer)
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With,Accept')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Max-Age', '3600')
+    return response
 
 def main():
     """Main application entry point"""

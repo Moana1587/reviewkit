@@ -9,7 +9,7 @@ def create_assistant(client, name, description, instructions):
     description=description,
     instructions=instructions,
     tools=[{"type": "file_search"}],
-    model="gpt-4o",  # Using gpt-4o as gpt-4o-mini may have server issues
+    model="gpt-4o",  # Using gpt-4o as gpt-4o may have server issues
     temperature=0.3  # Lower temperature = faster, more consistent responses
     )
     return assistant
